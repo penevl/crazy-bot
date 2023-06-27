@@ -1,0 +1,12 @@
+{
+  "name": "crazy-bot",
+  "version": "1.0.0",
+  "description": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats! The rats made me crazy.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
