@@ -1,10 +1,12 @@
 require("dotenv").config();
 const { Client, Events, GatewayIntentBits } = require("discord.js");
+const uwuifier = require("uwuify");
 
 console.log(
   "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats! The rats made me crazy."
 );
 
+const uwuify = new uwuifier();
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -94,6 +96,15 @@ client.on("messageCreate", (msg) => {
     ) {
       console.log(`Replying to ${msg.author.username}'s ${msg} with Toyota`);
       msg.channel.send("Toyota");
+    }
+  }
+});
+
+client.on("messageCreate", (msg) => {
+  if (!msg.author.bot) {
+    if (msg.content.startsWith("!uwu")) {
+      console.log(`Uwuified ${msg.author.username}'s ${msg}`);
+      msg.channel.send(uwuify.uwuify(msg.content.replace("!uwu", "")));
     }
   }
 });
