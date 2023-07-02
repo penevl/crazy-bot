@@ -61,7 +61,7 @@ client.on("messageCreate", (msg) => {
       msg.content.toLowerCase() == "a rubber room with rats." ||
       msg.content.toLowerCase() == "a rubber room with rats!"
     ) {
-      const reply = "The rats made me crazy";
+      const reply = "The rats make me crazy";
       console.log(`Replying to ${msg.author.username}'s ${msg} with ${reply}`);
       msg.channel.send(reply);
     }
