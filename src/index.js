@@ -77,4 +77,16 @@ client.on("messageCreate", (msg) => {
   }
 });
 
+client.on("messageCreate", (msg) => {
+  if (!msg.author.bot) {
+    if (
+      msg.content.toLowerCase() == "toyota" &&
+      msg.channelId == process.env.TOYOTA_CHANNEL_ID
+    ) {
+      console.log(`Replying to ${msg.author.username}'s ${msg} with Toyota`);
+      msg.channel.send("Toyota");
+    }
+  }
+});
+
 client.login(process.env.TOKEN);
