@@ -1,12 +1,11 @@
 require("dotenv").config();
 const { Client, Events, GatewayIntentBits } = require("discord.js");
-const uwuifier = require("uwuify");
+const owospeak = require("owospeak");
 
 console.log(
   "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats! The rats made me crazy."
 );
 
-const uwuify = new uwuifier();
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -14,6 +13,8 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
 });
+
+var uwuProps = { stutter: false, tilde: true };
 
 client.once(Events.ClientReady, (c) => {
   console.log(`Ready! Logged in as ${c.user.tag}`);
@@ -104,7 +105,34 @@ client.on("messageCreate", (msg) => {
   if (!msg.author.bot) {
     if (msg.content.startsWith("!uwu")) {
       console.log(`Uwuified ${msg.author.username}'s ${msg}`);
-      msg.channel.send(uwuify.uwuify(msg.content.replace("!uwu", "")));
+      msg.channel.send(
+        owospeak.convert(msg.content.replace("!uwu", ""), uwuProps)
+      );
+    }
+  }
+});
+
+client.on("messageCreate", (msg) => {
+  if (!msg.author.bot) {
+    if (msg.content.startsWith("!stutter")) {
+      if (msg.author.id == process.env.OWNER_ID) {
+        console.log(`Changed stutter options`);
+        uwuProps.stutter = !uwuProps.stutter;
+        msg.channel.send(`Changed stutter options to ${uwuProps.stutter}`);
+      } else {
+        console.log(`${msg.author.username} tried to change stutter options`);
+        msg.channel.send("Insufficient privileges");
+      }
+    }
+    if (msg.content.startsWith("!tilde")) {
+      if (msg.author.id == process.env.OWNER_ID) {
+        console.log(`Changed tilde options`);
+        uwuProps.tilde = !uwuProps.tilde;
+        msg.channel.send(`Changed tilde options to ${uwuProps.tilde}`);
+      } else {
+        console.log(`${msg.author.username} tried to change tilde options`);
+        msg.channel.send("Insufficient privileges");
+      }
     }
   }
 });
