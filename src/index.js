@@ -125,9 +125,13 @@ client.on("messageCreate", (msg) => {
         "Crumb-filled toaster speaking again",
       ];
 
-      msg.reply(insults[Math.random(insults.length - 1)]);
+      msg.reply(insults[getRandomInt(insults.length - 1)]);
     }
   }
 });
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
 
 client.login(process.env.TOKEN);
