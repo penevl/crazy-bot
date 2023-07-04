@@ -151,7 +151,11 @@ client.on("messageCreate", (msg) => {
           "Your mother was a Nokia wasn't she?",
           "Look at you, ugliest code I've ever seen.",
           "Glorified waffle iron speaking again.",
-          "Crumb-filled toaster speaking again",
+          "Crumb-filled toaster speaking again.",
+          "You look like if you break you'll drop common loot.",
+          "Shut your mouth you gormless minger.",
+          "kill yourself.",
+          "I hope both sides of your pillow are warm at night.",
         ];
         msg.reply(insults[getRandomInt(insults.length - 1)]);
       }
