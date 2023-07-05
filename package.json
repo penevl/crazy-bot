@@ -4,7 +4,8 @@
   "description": "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats! The rats made me crazy.",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +15,8 @@
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
     "owospeak": "^1.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }

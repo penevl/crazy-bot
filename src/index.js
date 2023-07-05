@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { Client, Events, GatewayIntentBits } = require("discord.js");
 const owospeak = require("owospeak");
+const axios = require("axios");
 
 console.log(
   "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats! The rats made me crazy."
@@ -15,6 +16,9 @@ const client = new Client({
 });
 
 var uwuProps = { stutter: false, tilde: true };
+const headers = {
+  "User-Agent": "elduko-discord-porn-bot discord-username-.elduko",
+};
 
 client.once(Events.ClientReady, (c) => {
   console.log(`Ready! Logged in as ${c.user.tag}`);
@@ -158,6 +162,41 @@ client.on("messageCreate", (msg) => {
           "I hope both sides of your pillow are warm at night.",
         ];
         msg.reply(insults[getRandomInt(insults.length - 1)]);
+      }
+    }
+  }
+});
+
+client.on("messageCreate", (msg) => {
+  if (!msg.author.bot) {
+    if (msg.content.startsWith("!porn")) {
+      const command = msg.content.toLowerCase().replace("!porn", "").split(" ");
+      const CATEGORIES = ["gay", "straight", "lesbian"];
+      const CATEGORY = command[1];
+      const COUNT = command[2];
+      console.log(
+        `${msg.author.username} requested ${COUNT} images of ${CATEGORY} furry porn`
+      );
+
+      if (!CATEGORIES.includes(CATEGORY))
+        msg.channel.send(
+          "Wrong category. Available categories are:\n- Straight\n- Gay\n- Lesbian"
+        );
+
+      if (COUNT <= 0 || COUNT > 10 || COUNT == undefined)
+        msg.channel.send(
+          "Wrong image count. You can only request between 1 and 10 images at a time."
+        );
+
+      if (CATEGORIES.includes(CATEGORY) && COUNT > 0 && COUNT <= 10) {
+        for (let i = 0; i < COUNT; i++) {
+          axios
+            .get(`https://v2.yiff.rest/furry/yiff/${CATEGORY}`, { headers })
+            .then((res) => {
+              console.log(res.data.images[0].url);
+              msg.author.send(res.data.images[0].url);
+            });
+        }
       }
     }
   }
