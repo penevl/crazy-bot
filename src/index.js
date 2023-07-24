@@ -18,6 +18,7 @@ const client = new Client({
 var uwuProps = { stutter: false, tilde: true };
 const headers = {
   "User-Agent": "elduko-discord-porn-bot discord-username-.elduko",
+  Authorization: "38958886e497868cf67cddc3270261aad755cec2",
 };
 
 client.once(Events.ClientReady, (c) => {
@@ -190,12 +191,16 @@ client.on("messageCreate", (msg) => {
 
       if (CATEGORIES.includes(CATEGORY) && COUNT > 0 && COUNT <= 10) {
         for (let i = 0; i < COUNT; i++) {
-          axios
-            .get(`https://v2.yiff.rest/furry/yiff/${CATEGORY}`, { headers })
-            .then((res) => {
-              console.log(res.data.images[0].url);
-              msg.author.send(res.data.images[0].url);
-            });
+          setTimeout(() => {
+            axios
+              .get(`https://v2.yiff.rest/furry/yiff/${CATEGORY}`, { headers })
+              .then((res) => {
+                msg.author.send(res.data.images[0].url);
+              })
+              .catch((err) => {
+                console.log("Rate limited");
+              });
+          }, i * 1000);
         }
       }
     }
