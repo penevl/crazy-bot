@@ -200,7 +200,7 @@ client.on("messageCreate", (msg) => {
               .catch((err) => {
                 console.log("Rate limited");
               });
-          }, i * 1000);
+          }, i * 2000);
         }
       }
     }
