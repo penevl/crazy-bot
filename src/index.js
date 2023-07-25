@@ -18,7 +18,6 @@ const client = new Client({
 var uwuProps = { stutter: false, tilde: true };
 const headers = {
   "User-Agent": "elduko-discord-porn-bot discord-username-.elduko",
-  Authorization: "38958886e497868cf67cddc3270261aad755cec2",
 };
 
 client.once(Events.ClientReady, (c) => {
