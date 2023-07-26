@@ -1,7 +1,13 @@
 require("dotenv").config();
-const { Client, Events, GatewayIntentBits } = require("discord.js");
+const {
+  Client,
+  Events,
+  GatewayIntentBits,
+  EmbedBuilder,
+} = require("discord.js");
 const owospeak = require("owospeak");
 const axios = require("axios");
+const r34API = require("r34.api");
 
 console.log(
   "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats! The rats made me crazy."
@@ -206,8 +212,45 @@ client.on("messageCreate", (msg) => {
   }
 });
 
+client.on("messageCreate", (msg) => {
+  if (!msg.author.bot) {
+    if (msg.content.startsWith("!hentai")) {
+      const command = msg.content
+        .toLowerCase()
+        .replace("!hentai", "")
+        .split(" ");
+      const CATEGORY = command[1];
+      const COUNT = command[2];
+      console.log(
+        `${msg.author.username} requested ${COUNT} images of ${CATEGORY} hentai`
+      );
+
+      if (COUNT <= 0 || COUNT > 10 || COUNT == undefined)
+        msg.channel.send(
+          "Wrong image count. You can only request between 1 and 10 images at a time."
+        );
+
+      if (COUNT > 0 && COUNT <= 10) {
+        for (let i = 0; i < COUNT; i++) {
+          setTimeout(() => {
+            getHentai(CATEGORY).then((image) => {
+              const toReturn = image.replaceAll('"', "");
+              msg.author.send(toReturn);
+            });
+          }, i * 1500);
+        }
+      }
+    }
+  }
+});
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
+}
+
+async function getHentai(category) {
+  let image = await r34API.rule34([category]);
+  return image;
 }
 
 client.login(process.env.TOKEN);
