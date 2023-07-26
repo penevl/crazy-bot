@@ -32,7 +32,10 @@ client.once(Events.ClientReady, (c) => {
 
 client.on("messageCreate", (msg) => {
   if (!msg.author.bot) {
-    if (msg.content.toLowerCase() == "crazy") {
+    if (
+      msg.content.toLowerCase() != "crazy?" &&
+      msg.content.toLowerCase().includes("crazy")
+    ) {
       const reply = "Crazy? I was crazy once.";
       console.log(`Replying to ${msg.author.username}'s ${msg} with ${reply}`);
       msg.channel.send(reply);
