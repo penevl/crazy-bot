@@ -8,10 +8,13 @@ const {
 const owospeak = require("owospeak");
 const axios = require("axios");
 const r34API = require("r34.api");
+const {registerCommands} = require('./commandRegister')
 
 console.log(
   "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats! The rats made me crazy."
 );
+
+registerCommands()
 
 const client = new Client({
   intents: [
@@ -230,8 +233,51 @@ client.on("messageCreate", (msg) => {
   }
 });
 
+client.on('interactionCreate', (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === 'intro') {
+    const introRole = process.env.INTRO_ROLE
+    const mentorRole = process.env.MENTOR_ROLE
+    interaction.guild.members.fetch(interaction.options.get('user').value).then(introUser => {
+      interaction.guild.members.fetch(interaction.user).then(mentor => {
+        if(getUserRoles(mentor).includes(mentorRole)){
+          introUser.roles.remove(introRole, `Member was introed by ${interaction.client.user.username}`).then(() => {
+            interaction.guild.roles.fetch(introRole).then(role => {
+              interaction.reply({ 
+                content: `Successfuly removed role ${role.name} from ${introUser.displayName}`, 
+                ephemeral: true 
+              })
+            })
+          }).catch(() => {
+            interaction.guild.roles.fetch(introRole).then(role => {
+              interaction.reply({ 
+                content: `Failed to remove role ${role.name} from ${introUser.displayName}`, 
+                ephemeral: true 
+              })
+            })
+          })
+        }else{
+          interaction.reply({ 
+            content: `Insufficient privileges`, 
+            ephemeral: true 
+          })
+        }
+      })
+    });
+  }
+});
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
+}
+
+function getUserRoles(user){
+  var roles = []
+  user.roles.cache.forEach(role => {
+    roles.push(role.id)
+  })
+  return roles
 }
 
 async function getHentai(category) {
