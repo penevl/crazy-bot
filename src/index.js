@@ -250,9 +250,10 @@ client.on('interactionCreate', (interaction) => {
                 ephemeral: true 
               })
             })
-          }).catch(() => {
+          }).catch((err) => {
             interaction.guild.roles.fetch(introRole).then(role => {
               console.log(`${mentor.nickname} has tried to intro ${introUser.nickname} but the role failed to be removed`)
+              console.error(err)
               interaction.reply({ 
                 content: `Failed to remove role ${role.name} from ${introUser.displayName}`, 
                 ephemeral: true 
