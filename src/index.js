@@ -81,24 +81,6 @@ client.on("messageCreate", (msg) => {
       console.log(`Replying to ${msg.author.username}'s ${msg} with ${reply}`);
       msg.channel.send(reply);
     }
-    if (
-      msg.content.toLowerCase() == "the rats made me crazy" ||
-      msg.content.toLowerCase() == "the rats made me crazy!" ||
-      msg.content.toLowerCase() == "the rats made me crazy."
-    ) {
-      const reply = "Crazy?";
-      console.log(`Replying to ${msg.author.username}'s ${msg} with ${reply}`);
-      msg.channel.send(reply);
-    }
-    if (
-      msg.content.toLowerCase() == "the rats make me crazy" ||
-      msg.content.toLowerCase() == "the rats make me crazy!" ||
-      msg.content.toLowerCase() == "the rats make me crazy."
-    ) {
-      const reply = "Crazy?";
-      console.log(`Replying to ${msg.author.username}'s ${msg} with ${reply}`);
-      msg.channel.send(reply);
-    }
   }
 });
 
