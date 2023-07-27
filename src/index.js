@@ -244,7 +244,7 @@ client.on('interactionCreate', (interaction) => {
         if(getUserRoles(mentor).includes(mentorRole) || isAdmin(mentor)){
           introUser.roles.remove(introRole, `Member was introed by ${interaction.client.user.username}`).then(() => {
             interaction.guild.roles.fetch(introRole).then(role => {
-              console.log(`${mentor.nickname} has introed ${introUser.nickname}`)
+              console.log(`${mentor.displayName} has introed ${introUser.displayName}`)
               interaction.reply({ 
                 content: `Successfuly removed role ${role.name} from ${introUser.displayName}`, 
                 ephemeral: true 
@@ -252,7 +252,7 @@ client.on('interactionCreate', (interaction) => {
             })
           }).catch((err) => {
             interaction.guild.roles.fetch(introRole).then(role => {
-              console.log(`${mentor.nickname} has tried to intro ${introUser.nickname} but the role failed to be removed`)
+              console.log(`${mentor.displayName} has tried to intro ${introUser.displayName} but the role failed to be removed`)
               console.error(err)
               interaction.reply({ 
                 content: `Failed to remove role ${role.name} from ${introUser.displayName}`, 
@@ -261,7 +261,7 @@ client.on('interactionCreate', (interaction) => {
             })
           })
         }else{
-          console.log(`${mentor.nickname} tried to use the intro command with insufficient privileges`)
+          console.log(`${mentor.displayName} tried to use the intro command with insufficient privileges`)
           interaction.reply({ 
             content: `Insufficient privileges to use intro command`, 
             ephemeral: false 
@@ -285,29 +285,29 @@ client.on('interactionCreate', (interaction) => {
         if(getUserRoles(mentor).includes(mentorRole) || isAdmin(mentor)){
           newMember.roles.remove([newcomerRole, imposterRole], `Member was promoted by ${interaction.client.user.username}`).then(() => {
             newMember.roles.add(promotionRole, `Member was promoted by ${interaction.client.user.username}`).then(() => {
-              console.log(`${mentor.nickname} has promoted ${newMember.displayName}`)
+              console.log(`${mentor.displayName} has promoted ${newMember.displayName}`)
               interaction.reply({ 
                 content: `Successfuly promoted ${newMember.displayName}`, 
                 ephemeral: true 
               })
             }).catch((err) => {
-              console.log(`${mentor.nickname} has tried to promote ${newMember.nickname} but the bot failed to add the promotion role`)
+              console.log(`${mentor.displayName} has tried to promote ${newMember.displayName} but the bot failed to add the promotion role`)
               console.error(err)
               interaction.reply({ 
-                content: `Tried to promote ${newMember.nickname} but the bot failed to add the promotion role`, 
+                content: `Tried to promote ${newMember.displayName} but the bot failed to add the promotion role`, 
                 ephemeral: true 
               })
             })
           }).catch((err) => {
-              console.log(`${mentor.nickname} has tried to promote ${newMember.nickname} but the newcomer role(s) failed to be removed`)
+              console.log(`${mentor.displayName} has tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`)
               console.error(err)
               interaction.reply({ 
-                content: `Tried to promote ${newMember.nickname} but the newcomer role(s) failed to be removed`, 
+                content: `Tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`, 
                 ephemeral: true 
               })
           })
         }else{
-          console.log(`${mentor.nickname} tried to use the promote command with insufficient privileges`)
+          console.log(`${mentor.displayName} tried to use the promote command with insufficient privileges`)
           interaction.reply({ 
             content: `Insufficient privileges to use promote command`, 
             ephemeral: false 
