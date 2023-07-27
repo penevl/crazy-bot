@@ -244,6 +244,7 @@ client.on('interactionCreate', (interaction) => {
         if(getUserRoles(mentor).includes(mentorRole)){
           introUser.roles.remove(introRole, `Member was introed by ${interaction.client.user.username}`).then(() => {
             interaction.guild.roles.fetch(introRole).then(role => {
+              console.log(`${mentor.nickname} has introed ${introUser.nickname}`)
               interaction.reply({ 
                 content: `Successfuly removed role ${role.name} from ${introUser.displayName}`, 
                 ephemeral: true 
@@ -251,6 +252,7 @@ client.on('interactionCreate', (interaction) => {
             })
           }).catch(() => {
             interaction.guild.roles.fetch(introRole).then(role => {
+              console.log(`${mentor.nickname} has tried to intro ${introUser.nickname} but the role failed to be removed`)
               interaction.reply({ 
                 content: `Failed to remove role ${role.name} from ${introUser.displayName}`, 
                 ephemeral: true 
@@ -258,9 +260,10 @@ client.on('interactionCreate', (interaction) => {
             })
           })
         }else{
+          console.log(`${mentor.nickname} tried to use the intro command with insufficient privileges`)
           interaction.reply({ 
-            content: `Insufficient privileges`, 
-            ephemeral: true 
+            content: `Insufficient privileges to use intro command`, 
+            ephemeral: false 
           })
         }
       })
