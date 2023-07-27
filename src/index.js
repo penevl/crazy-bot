@@ -113,7 +113,7 @@ client.on("messageCreate", (msg) => {
 client.on("messageCreate", (msg) => {
   if (!msg.author.bot) {
     if (msg.content.startsWith("!stutter")) {
-      if (msg.author.id == process.env.OWNER_ID) {
+      if (isAdmin(msg.author)) {
         console.log(`Changed stutter options`);
         uwuProps.stutter = !uwuProps.stutter;
         msg.channel.send(`Changed stutter options to ${uwuProps.stutter}`);
@@ -123,7 +123,7 @@ client.on("messageCreate", (msg) => {
       }
     }
     if (msg.content.startsWith("!tilde")) {
-      if (msg.author.id == process.env.OWNER_ID) {
+      if (isAdmin(msg.author)) {
         console.log(`Changed tilde options`);
         uwuProps.tilde = !uwuProps.tilde;
         msg.channel.send(`Changed tilde options to ${uwuProps.tilde}`);
@@ -241,7 +241,7 @@ client.on('interactionCreate', (interaction) => {
     const mentorRole = process.env.MENTOR_ROLE
     interaction.guild.members.fetch(interaction.options.get('user').value).then(introUser => {
       interaction.guild.members.fetch(interaction.user).then(mentor => {
-        if(getUserRoles(mentor).includes(mentorRole)){
+        if(getUserRoles(mentor).includes(mentorRole) || isAdmin(mentor)){
           introUser.roles.remove(introRole, `Member was introed by ${interaction.client.user.username}`).then(() => {
             interaction.guild.roles.fetch(introRole).then(role => {
               console.log(`${mentor.nickname} has introed ${introUser.nickname}`)
@@ -281,7 +281,7 @@ client.on('interactionCreate', (interaction) => {
     const mentorRole = process.env.MENTOR_ROLE
     interaction.guild.members.fetch(interaction.options.get('user').value).then(newMember => {
       interaction.guild.members.fetch(interaction.user).then(mentor => {
-        if(getUserRoles(mentor).includes(mentorRole)){
+        if(getUserRoles(mentor).includes(mentorRole) || isAdmin(mentor)){
           newMember.roles.remove([newcomerRole, imposterRole], `Member was promoted by ${interaction.client.user.username}`).then(() => {
             newMember.roles.add(promotionRole, `Member was promoted by ${interaction.client.user.username}`).then(() => {
               console.log(`${mentor.nickname} has promoted ${newMember.displayName}`)
@@ -327,6 +327,13 @@ function getUserRoles(user){
     roles.push(role.id)
   })
   return roles
+}
+
+function isAdmin(user){
+  const roles = getUserRoles(user)
+  if(roles.includes(process.env.ADMIN_ROLE_ID) || user.id == process.env.OWNER_ID){
+    return true;
+  }
 }
 
 async function getHentai(category) {
