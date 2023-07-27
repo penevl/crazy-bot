@@ -200,12 +200,15 @@ client.on("messageCreate", (msg) => {
 client.on("messageCreate", (msg) => {
   if (!msg.author.bot) {
     if (msg.content.startsWith("!hentai")) {
-      const command = msg.content
+      var command = msg.content
         .toLowerCase()
         .replace("!hentai", "")
         .split(" ");
-      const CATEGORY = command[1];
-      const COUNT = command[2];
+      const COUNT = command.pop();
+      console.log(`Command: ${command}`)
+      command.shift()
+      const CATEGORY = command.toString();
+      console.log(`Command2: ${command}`)
       console.log(
         `${msg.author.username} requested ${COUNT} images of ${CATEGORY} hentai`
       );
@@ -234,7 +237,9 @@ function getRandomInt(max) {
 }
 
 async function getHentai(category) {
-  let image = await r34API.rule34([category]);
+  var final = category.toString().split(',')
+  console.log(`Category: ${final}`)
+  let image = await r34API.rule34(final);
   return image;
 }
 
