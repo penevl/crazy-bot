@@ -271,6 +271,52 @@ client.on('interactionCreate', (interaction) => {
   }
 });
 
+client.on('interactionCreate', (interaction) => {
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === 'promote') {
+    const newcomerRole = process.env.NEWCOMER_ROLE
+    const promotionRole = process.env.PROMOTION_ROLE
+    const imposterRole = process.env.IMPOSTER_ROLE
+    const mentorRole = process.env.MENTOR_ROLE
+    interaction.guild.members.fetch(interaction.options.get('user').value).then(newMember => {
+      interaction.guild.members.fetch(interaction.user).then(mentor => {
+        if(getUserRoles(mentor).includes(mentorRole)){
+          newMember.roles.remove([newcomerRole, imposterRole], `Member was promoted by ${interaction.client.user.username}`).then(() => {
+            newMember.roles.add(promotionRole, `Member was promoted by ${interaction.client.user.username}`).then(() => {
+              console.log(`${mentor.nickname} has promoted ${newMember.displayName}`)
+              interaction.reply({ 
+                content: `Successfuly promoted ${newMember.displayName}`, 
+                ephemeral: true 
+              })
+            }).catch((err) => {
+              console.log(`${mentor.nickname} has tried to promote ${newMember.nickname} but the bot failed to add the promotion role`)
+              console.error(err)
+              interaction.reply({ 
+                content: `Tried to promote ${newMember.nickname} but the bot failed to add the promotion role`, 
+                ephemeral: true 
+              })
+            })
+          }).catch((err) => {
+              console.log(`${mentor.nickname} has tried to promote ${newMember.nickname} but the newcomer role(s) failed to be removed`)
+              console.error(err)
+              interaction.reply({ 
+                content: `Tried to promote ${newMember.nickname} but the newcomer role(s) failed to be removed`, 
+                ephemeral: true 
+              })
+          })
+        }else{
+          console.log(`${mentor.nickname} tried to use the promote command with insufficient privileges`)
+          interaction.reply({ 
+            content: `Insufficient privileges to use promote command`, 
+            ephemeral: false 
+          })
+        }
+      })
+    });
+  }
+});
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }

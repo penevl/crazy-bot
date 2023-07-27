@@ -14,6 +14,18 @@ const commands = [
         }
     ]
   },
+  {
+    name: 'promote',
+    description: 'Promotes a user to youngling',
+    options: [
+        {
+            name: 'user',
+            description: 'User to be promoted',
+            type: ApplicationCommandOptionType.User,
+            required: true
+        }
+    ]
+  }
 ];
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
