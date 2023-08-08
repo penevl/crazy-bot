@@ -260,12 +260,13 @@ client.on("messageCreate", (msg) => {
     }
 });
 
-client.on("interactionCreate", (interaction) => {
+client.on("interactionCreate", async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     if (interaction.commandName === "intro") {
         const introRole = process.env.INTRO_ROLE;
         const mentorRole = process.env.MENTOR_ROLE;
+        await interaction.deferReply({ ephemeral: true });
         interaction.guild.members
             .fetch(interaction.options.get("user").value)
             .then((introUser) => {
@@ -288,9 +289,8 @@ client.on("interactionCreate", (interaction) => {
                                             console.log(
                                                 `${mentor.displayName} has introed ${introUser.displayName}`
                                             );
-                                            interaction.reply({
+                                            interaction.editReply({
                                                 content: `Successfuly removed role ${role.name} from ${introUser.displayName}`,
-                                                ephemeral: true,
                                             });
                                         });
                                 })
@@ -302,9 +302,8 @@ client.on("interactionCreate", (interaction) => {
                                                 `${mentor.displayName} has tried to intro ${introUser.displayName} but the role failed to be removed`
                                             );
                                             console.error(err);
-                                            interaction.reply({
+                                            interaction.editReply({
                                                 content: `Failed to remove role ${role.name} from ${introUser.displayName}`,
-                                                ephemeral: true,
                                             });
                                         });
                                 });
@@ -312,9 +311,8 @@ client.on("interactionCreate", (interaction) => {
                             console.log(
                                 `${mentor.displayName} tried to use the intro command with insufficient privileges`
                             );
-                            interaction.reply({
+                            interaction.editReply({
                                 content: `Insufficient privileges to use intro command`,
-                                ephemeral: false,
                             });
                         }
                     });
@@ -322,7 +320,7 @@ client.on("interactionCreate", (interaction) => {
     }
 });
 
-client.on("interactionCreate", (interaction) => {
+client.on("interactionCreate", async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     if (interaction.commandName === "promote") {
@@ -330,6 +328,7 @@ client.on("interactionCreate", (interaction) => {
         const promotionRole = process.env.PROMOTION_ROLE;
         const imposterRole = process.env.IMPOSTER_ROLE;
         const mentorRole = process.env.MENTOR_ROLE;
+        await interaction.deferReply({ ephemeral: true });
         interaction.guild.members
             .fetch(interaction.options.get("user").value)
             .then((newMember) => {
@@ -355,9 +354,8 @@ client.on("interactionCreate", (interaction) => {
                                             console.log(
                                                 `${mentor.displayName} has promoted ${newMember.displayName}`
                                             );
-                                            interaction.reply({
+                                            interaction.editReply({
                                                 content: `Successfuly promoted ${newMember.displayName}`,
-                                                ephemeral: true,
                                             });
                                         })
                                         .catch((err) => {
@@ -365,9 +363,8 @@ client.on("interactionCreate", (interaction) => {
                                                 `${mentor.displayName} has tried to promote ${newMember.displayName} but the bot failed to add the promotion role`
                                             );
                                             console.error(err);
-                                            interaction.reply({
+                                            interaction.editReply({
                                                 content: `Tried to promote ${newMember.displayName} but the bot failed to add the promotion role`,
-                                                ephemeral: true,
                                             });
                                         });
                                 })
@@ -376,18 +373,16 @@ client.on("interactionCreate", (interaction) => {
                                         `${mentor.displayName} has tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`
                                     );
                                     console.error(err);
-                                    interaction.reply({
+                                    interaction.editReply({
                                         content: `Tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`,
-                                        ephemeral: true,
                                     });
                                 });
                         } else {
                             console.log(
                                 `${mentor.displayName} tried to use the promote command with insufficient privileges`
                             );
-                            interaction.reply({
+                            interaction.editReply({
                                 content: `Insufficient privileges to use promote command`,
-                                ephemeral: false,
                             });
                         }
                     });
