@@ -266,57 +266,111 @@ client.on("interactionCreate", async (interaction) => {
     if (interaction.commandName === "intro") {
         const introRole = process.env.INTRO_ROLE;
         const mentorRole = process.env.MENTOR_ROLE;
+        var reversed = false;
+        try {
+            reversed = interaction.options.get("reverse").value;
+        } catch (error) {}
         await interaction.deferReply({ ephemeral: true });
-        interaction.guild.members
-            .fetch(interaction.options.get("user").value)
-            .then((introUser) => {
-                interaction.guild.members
-                    .fetch(interaction.user)
-                    .then((mentor) => {
-                        if (
-                            getUserRoles(mentor).includes(mentorRole) ||
-                            isAdmin(mentor)
-                        ) {
-                            introUser.roles
-                                .remove(
-                                    introRole,
-                                    `Member was introed by ${interaction.client.user.username}`
-                                )
-                                .then(() => {
-                                    interaction.guild.roles
-                                        .fetch(introRole)
-                                        .then((role) => {
-                                            console.log(
-                                                `${mentor.displayName} has introed ${introUser.displayName}`
-                                            );
-                                            interaction.editReply({
-                                                content: `Successfuly removed role ${role.name} from ${introUser.displayName}`,
+        if (reversed) {
+            interaction.guild.members
+                .fetch(interaction.options.get("user").value)
+                .then((introUser) => {
+                    interaction.guild.members
+                        .fetch(interaction.user)
+                        .then((mentor) => {
+                            if (isAdmin(mentor)) {
+                                introUser.roles
+                                    .add(
+                                        introRole,
+                                        `Member was reverse introed by ${interaction.client.user.username}`
+                                    )
+                                    .then(() => {
+                                        interaction.guild.roles
+                                            .fetch(introRole)
+                                            .then((role) => {
+                                                console.log(
+                                                    `${mentor.displayName} has reverse introed ${introUser.displayName}`
+                                                );
+                                                interaction.editReply({
+                                                    content: `Successfuly gave role ${role.name} to ${introUser.displayName}`,
+                                                });
                                             });
-                                        });
-                                })
-                                .catch((err) => {
-                                    interaction.guild.roles
-                                        .fetch(introRole)
-                                        .then((role) => {
-                                            console.log(
-                                                `${mentor.displayName} has tried to intro ${introUser.displayName} but the role failed to be removed`
-                                            );
-                                            console.error(err);
-                                            interaction.editReply({
-                                                content: `Failed to remove role ${role.name} from ${introUser.displayName}`,
+                                    })
+                                    .catch((err) => {
+                                        interaction.guild.roles
+                                            .fetch(introRole)
+                                            .then((role) => {
+                                                console.log(
+                                                    `${mentor.displayName} has tried to reverse intro ${introUser.displayName} but the role failed to be added`
+                                                );
+                                                console.error(err);
+                                                interaction.editReply({
+                                                    content: `Failed to give role ${role.name} to ${introUser.displayName}`,
+                                                });
                                             });
-                                        });
+                                    });
+                            } else {
+                                console.log(
+                                    `${mentor.displayName} tried to use the reverse intro command with insufficient privileges`
+                                );
+                                interaction.editReply({
+                                    content: `Insufficient privileges to use reverse intro command`,
                                 });
-                        } else {
-                            console.log(
-                                `${mentor.displayName} tried to use the intro command with insufficient privileges`
-                            );
-                            interaction.editReply({
-                                content: `Insufficient privileges to use intro command`,
-                            });
-                        }
-                    });
-            });
+                            }
+                        });
+                });
+        } else {
+            interaction.guild.members
+                .fetch(interaction.options.get("user").value)
+                .then((introUser) => {
+                    interaction.guild.members
+                        .fetch(interaction.user)
+                        .then((mentor) => {
+                            if (
+                                getUserRoles(mentor).includes(mentorRole) ||
+                                isAdmin(mentor)
+                            ) {
+                                introUser.roles
+                                    .remove(
+                                        introRole,
+                                        `Member was introed by ${interaction.client.user.username}`
+                                    )
+                                    .then(() => {
+                                        interaction.guild.roles
+                                            .fetch(introRole)
+                                            .then((role) => {
+                                                console.log(
+                                                    `${mentor.displayName} has introed ${introUser.displayName}`
+                                                );
+                                                interaction.editReply({
+                                                    content: `Successfuly removed role ${role.name} from ${introUser.displayName}`,
+                                                });
+                                            });
+                                    })
+                                    .catch((err) => {
+                                        interaction.guild.roles
+                                            .fetch(introRole)
+                                            .then((role) => {
+                                                console.log(
+                                                    `${mentor.displayName} has tried to intro ${introUser.displayName} but the role failed to be removed`
+                                                );
+                                                console.error(err);
+                                                interaction.editReply({
+                                                    content: `Failed to remove role ${role.name} from ${introUser.displayName}`,
+                                                });
+                                            });
+                                    });
+                            } else {
+                                console.log(
+                                    `${mentor.displayName} tried to use the intro command with insufficient privileges`
+                                );
+                                interaction.editReply({
+                                    content: `Insufficient privileges to use intro command`,
+                                });
+                            }
+                        });
+                });
+        }
     }
 });
 
@@ -328,65 +382,127 @@ client.on("interactionCreate", async (interaction) => {
         const promotionRole = process.env.PROMOTION_ROLE;
         const imposterRole = process.env.IMPOSTER_ROLE;
         const mentorRole = process.env.MENTOR_ROLE;
+        var reversed = false;
+        try {
+            reversed = interaction.options.get("reverse").value;
+        } catch (error) {}
         await interaction.deferReply({ ephemeral: true });
-        interaction.guild.members
-            .fetch(interaction.options.get("user").value)
-            .then((newMember) => {
-                interaction.guild.members
-                    .fetch(interaction.user)
-                    .then((mentor) => {
-                        if (
-                            getUserRoles(mentor).includes(mentorRole) ||
-                            isAdmin(mentor)
-                        ) {
-                            newMember.roles
-                                .remove(
-                                    [newcomerRole, imposterRole],
-                                    `Member was promoted by ${interaction.client.user.username}`
-                                )
-                                .then(() => {
-                                    newMember.roles
-                                        .add(
-                                            promotionRole,
-                                            `Member was promoted by ${interaction.client.user.username}`
-                                        )
-                                        .then(() => {
-                                            console.log(
-                                                `${mentor.displayName} has promoted ${newMember.displayName}`
-                                            );
-                                            interaction.editReply({
-                                                content: `Successfuly promoted ${newMember.displayName}`,
+        if (reversed) {
+            interaction.guild.members
+                .fetch(interaction.options.get("user").value)
+                .then((newMember) => {
+                    interaction.guild.members
+                        .fetch(interaction.user)
+                        .then((mentor) => {
+                            if (isAdmin(mentor)) {
+                                newMember.roles
+                                    .remove(
+                                        [promotionRole],
+                                        `Member was promoted by ${interaction.client.user.username}`
+                                    )
+                                    .then(() => {
+                                        newMember.roles
+                                            .add(
+                                                newcomerRole,
+                                                `Member was reverse promoted by ${interaction.client.user.username}`
+                                            )
+                                            .then(() => {
+                                                console.log(
+                                                    `${mentor.displayName} has reverse promoted ${newMember.displayName}`
+                                                );
+                                                interaction.editReply({
+                                                    content: `Successfuly reverse promoted ${newMember.displayName}`,
+                                                });
+                                            })
+                                            .catch((err) => {
+                                                console.log(
+                                                    `${mentor.displayName} has tried to reverse promote ${newMember.displayName} but the bot failed to add the promotion role`
+                                                );
+                                                console.error(err);
+                                                interaction.editReply({
+                                                    content: `Tried to reverse promote ${newMember.displayName} but the bot failed`,
+                                                });
                                             });
-                                        })
-                                        .catch((err) => {
-                                            console.log(
-                                                `${mentor.displayName} has tried to promote ${newMember.displayName} but the bot failed to add the promotion role`
-                                            );
-                                            console.error(err);
-                                            interaction.editReply({
-                                                content: `Tried to promote ${newMember.displayName} but the bot failed to add the promotion role`,
-                                            });
+                                    })
+                                    .catch((err) => {
+                                        console.log(
+                                            `${mentor.displayName} has tried to reverse promote ${newMember.displayName} but failed`
+                                        );
+                                        console.error(err);
+                                        interaction.editReply({
+                                            content: `Tried to reverse promote ${newMember.displayName} but failed`,
                                         });
-                                })
-                                .catch((err) => {
-                                    console.log(
-                                        `${mentor.displayName} has tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`
-                                    );
-                                    console.error(err);
-                                    interaction.editReply({
-                                        content: `Tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`,
                                     });
+                            } else {
+                                console.log(
+                                    `${mentor.displayName} tried to use the reverse promote command with insufficient privileges`
+                                );
+                                interaction.editReply({
+                                    content: `Insufficient privileges to use reverse promote command`,
                                 });
-                        } else {
-                            console.log(
-                                `${mentor.displayName} tried to use the promote command with insufficient privileges`
-                            );
-                            interaction.editReply({
-                                content: `Insufficient privileges to use promote command`,
-                            });
-                        }
-                    });
-            });
+                            }
+                        });
+                });
+        } else {
+            interaction.guild.members
+                .fetch(interaction.options.get("user").value)
+                .then((newMember) => {
+                    interaction.guild.members
+                        .fetch(interaction.user)
+                        .then((mentor) => {
+                            if (
+                                getUserRoles(mentor).includes(mentorRole) ||
+                                isAdmin(mentor)
+                            ) {
+                                newMember.roles
+                                    .remove(
+                                        [newcomerRole, imposterRole],
+                                        `Member was promoted by ${interaction.client.user.username}`
+                                    )
+                                    .then(() => {
+                                        newMember.roles
+                                            .add(
+                                                promotionRole,
+                                                `Member was promoted by ${interaction.client.user.username}`
+                                            )
+                                            .then(() => {
+                                                console.log(
+                                                    `${mentor.displayName} has promoted ${newMember.displayName}`
+                                                );
+                                                interaction.editReply({
+                                                    content: `Successfuly promoted ${newMember.displayName}`,
+                                                });
+                                            })
+                                            .catch((err) => {
+                                                console.log(
+                                                    `${mentor.displayName} has tried to promote ${newMember.displayName} but the bot failed to add the promotion role`
+                                                );
+                                                console.error(err);
+                                                interaction.editReply({
+                                                    content: `Tried to promote ${newMember.displayName} but the bot failed to add the promotion role`,
+                                                });
+                                            });
+                                    })
+                                    .catch((err) => {
+                                        console.log(
+                                            `${mentor.displayName} has tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`
+                                        );
+                                        console.error(err);
+                                        interaction.editReply({
+                                            content: `Tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`,
+                                        });
+                                    });
+                            } else {
+                                console.log(
+                                    `${mentor.displayName} tried to use the promote command with insufficient privileges`
+                                );
+                                interaction.editReply({
+                                    content: `Insufficient privileges to use promote command`,
+                                });
+                            }
+                        });
+                });
+        }
     }
 });
 
