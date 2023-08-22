@@ -47,8 +47,12 @@ const commands = [
                 description: "User to be promoted",
                 type: ApplicationCommandOptionType.User,
                 required: true,
-            }
+            },
         ],
+    },
+    {
+        name: "check-auto",
+        description: "Check every single user to see if they are sus",
     },
 ];
 
