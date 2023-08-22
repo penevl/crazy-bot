@@ -578,7 +578,9 @@ client.on("interactionCreate", async (interaction) => {
         const newcomerRole = process.env.NEWCOMER_ROLE;
 
         if (isAdmin(initiator)) {
+            console.log(`${initiator.displayName} has initiated an auto check`);
             guildMembers.forEach(async (subject) => {
+                console.log(`Checking ${subject.displayName}`);
                 if (getUserRoles(subject).includes(newcomerRole)) {
                     var today = new Date();
                     var Difference_In_Time =
@@ -592,11 +594,17 @@ client.on("interactionCreate", async (interaction) => {
                             if (subject.kickable) {
                                 if (!subject.user.bot) {
                                     subject.kick();
+                                    console.log(
+                                        `${subject.displayName} with ID of ${subject.id} has been here for ${Difference_In_Days}days so he was kicked`
+                                    );
                                     interaction.channel.send({
-                                        content: `${subject.displayName} has been here for ${Difference_In_Days}days so he was kicked`,
+                                        content: `${subject.displayName} with ID of ${subject.id} has been here for ${Difference_In_Days}days so he was kicked`,
                                     });
                                 }
                             } else {
+                                console.log(
+                                    `It appears that for some reason ${subject.displayName} is un-kickable by the bot`
+                                );
                                 interaction.channel.send({
                                     content: `It appears that for some reason ${subject.displayName} is un-kickable by the bot`,
                                 });
@@ -604,6 +612,9 @@ client.on("interactionCreate", async (interaction) => {
                         } else {
                             if (!subject.user.bot) {
                                 subject.roles.add(imposterRole);
+                                console.log(
+                                    `${subject.displayName} has been here for ${Difference_In_Days}days so he was given the imposter role`
+                                );
                                 interaction.channel.send({
                                     content: `${subject.displayName} has been here for ${Difference_In_Days}days so he was given the imposter role`,
                                 });
