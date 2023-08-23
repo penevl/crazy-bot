@@ -3,7 +3,7 @@ const { logger } = require("../logger");
 const { isAdmin, getUserRoles } = require("../functions");
 
 function main(client) {
-    logger.info("Registered intro command(s)");
+    logger.info("Registered promote command(s)");
     client.on("interactionCreate", async (interaction) => {
         if (!interaction.isChatInputCommand()) return;
 
