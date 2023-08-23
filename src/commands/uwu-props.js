@@ -16,7 +16,10 @@ function main(client) {
                 logger.warn(
                     `${interaction.user.username} tried to change stutter options`
                 );
-                interaction.reply("Insufficient privileges");
+                interaction.reply({
+                    content: "Insufficient privileges",
+                    ephemeral: true,
+                });
                 return;
             }
             logger.info(`Changed stutter options`);
@@ -31,11 +34,17 @@ function main(client) {
                 logger.warn(
                     `${interaction.user.username} tried to change tilde options`
                 );
-                interaction.reply("Insufficient privileges");
+                interaction.reply({
+                    content: "Insufficient privileges",
+                    ephemeral: true,
+                });
             }
             logger.info(`Changed tilde options`);
             uwuProps.tilde = interaction.options.get("value").value;
-            interaction.reply(`Changed tilde options to ${uwuProps.tilde}`);
+            interaction.reply({
+                content: `Changed tilde options to ${uwuProps.tilde}`,
+                ephemeral: true,
+            });
         }
     });
 }
