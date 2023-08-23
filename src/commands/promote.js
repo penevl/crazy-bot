@@ -37,52 +37,52 @@ async function promote(interaction) {
     const mentor = await interaction.guild.members.fetch(interaction.user);
 
     if (getUserRoles(mentor).includes(mentorRole) || isAdmin(mentor)) {
-        newMember.roles
-            .remove(
-                [newcomerRole, imposterRole],
-                `Member was promoted by ${interaction.client.user.username}`
-            )
-            .then(() => {
-                newMember.roles
-                    .add(
-                        promotionRole,
-                        `Member was promoted by ${interaction.client.user.username}`
-                    )
-                    .then(() => {
-                        logger.info(
-                            `${mentor.displayName} has promoted ${newMember.displayName}`
-                        );
-                        interaction.editReply({
-                            content: `Successfuly promoted ${newMember.displayName}`,
-                        });
-                    })
-                    .catch((err) => {
-                        logger.error(
-                            `${mentor.displayName} has tried to promote ${newMember.displayName} but the bot failed to add the promotion role`
-                        );
-                        logger.error(err);
-                        interaction.editReply({
-                            content: `Tried to promote ${newMember.displayName} but the bot failed to add the promotion role`,
-                        });
-                    });
-            })
-            .catch((err) => {
-                logger.error(
-                    `${mentor.displayName} has tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`
-                );
-                logger.error(err);
-                interaction.editReply({
-                    content: `Tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`,
-                });
-            });
-    } else {
         logger.warn(
             `${mentor.displayName} tried to use the promote command with insufficient privileges`
         );
         interaction.editReply({
             content: `Insufficient privileges to use promote command`,
         });
+        return;
     }
+    newMember.roles
+        .remove(
+            [newcomerRole, imposterRole],
+            `Member was promoted by ${interaction.client.user.username}`
+        )
+        .then(() => {
+            newMember.roles
+                .add(
+                    promotionRole,
+                    `Member was promoted by ${interaction.client.user.username}`
+                )
+                .then(() => {
+                    logger.info(
+                        `${mentor.displayName} has promoted ${newMember.displayName}`
+                    );
+                    interaction.editReply({
+                        content: `Successfuly promoted ${newMember.displayName}`,
+                    });
+                })
+                .catch((err) => {
+                    logger.error(
+                        `${mentor.displayName} has tried to promote ${newMember.displayName} but the bot failed to add the promotion role`
+                    );
+                    logger.error(err);
+                    interaction.editReply({
+                        content: `Tried to promote ${newMember.displayName} but the bot failed to add the promotion role`,
+                    });
+                });
+        })
+        .catch((err) => {
+            logger.error(
+                `${mentor.displayName} has tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`
+            );
+            logger.error(err);
+            interaction.editReply({
+                content: `Tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`,
+            });
+        });
 }
 
 /**
