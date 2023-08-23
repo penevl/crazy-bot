@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { logger } = require("../logger");
-const { isAdmin, getUserRoles } = require("../functions");
+const { isAdmin, getUserRoles, calculateJoinTime } = require("../functions");
 
 function main(client) {
     logger.info("Registered check command");
@@ -16,45 +16,53 @@ function main(client) {
                 interaction.options.get("user").value
             );
             const imposterRole = process.env.IMPOSTER_ROLE;
+            const newcomerRole = process.env.NEWCOMER_ROLE;
 
-            if (isAdmin(initiator)) {
-                var today = new Date();
-                var Difference_In_Time =
-                    subject.joinedAt.getTime() - today.getTime();
-                var Difference_In_Days = Math.floor(
-                    (Difference_In_Time / (1000 * 3600 * 24)) * -1
-                );
-
-                if (Difference_In_Days > 15) {
-                    if (Difference_In_Days > 30) {
-                        if (subject.kickable) {
-                            subject.kick();
-                            interaction.editReply({
-                                content: `${subject.displayName} has been here for ${Difference_In_Days} so he was kicked`,
-                            });
-                        } else {
-                            interaction.editReply({
-                                content: `It appears that for some reason ${subject.displayName} is un-kickable by the bot`,
-                            });
-                        }
-                    } else {
-                        subject.roles.add(imposterRole);
-                        interaction.editReply({
-                            content: `${subject.displayName} has been here for ${Difference_In_Days} so he was given the imposter role`,
-                        });
-                    }
-                } else {
-                    interaction.editReply({
-                        content: `${subject.displayName} has been here for less then 15 days so no action was taken`,
-                    });
-                }
-            } else {
+            if (!isAdmin(initiator)) {
                 logger.warn(
                     `${initiator.displayName} tried to use the check command with insufficient priviliges`
                 );
                 interaction.editReply({
                     content: "Insufficient priviliges",
                 });
+                return;
+            }
+
+            if (getUserRoles(subject).includes(newcomerRole)) {
+                daysSinceJoin = calculateJoinTime(subject);
+
+                if (daysSinceJoin >= 15 && daysSinceJoin < 30) {
+                    if (!subject.user.bot) {
+                        subject.roles.add(imposterRole);
+                        logger.info(
+                            `${subject.displayName} has been here for ${daysSinceJoin}days so he was given the imposter role`
+                        );
+                        interaction.channel.send({
+                            content: `${subject.displayName} has been here for ${daysSinceJoin}days so he was given the imposter role`,
+                        });
+                    }
+                }
+
+                if (daysSinceJoin >= 30) {
+                    if (!subject.user.bot) {
+                        if (subject.kickable) {
+                            subject.kick();
+                            logger.info(
+                                `${subject.displayName} with ID of ${subject.id} has been here for ${daysSinceJoin}days so he was kicked`
+                            );
+                            interaction.channel.send({
+                                content: `${subject.displayName} with ID of ${subject.id} has been here for ${daysSinceJoin}days so he was kicked`,
+                            });
+                        } else {
+                            logger.error(
+                                `It appears that for some reason ${subject.displayName} is un-kickable by the bot`
+                            );
+                            interaction.channel.send({
+                                content: `It appears that for some reason ${subject.displayName} is un-kickable by the bot`,
+                            });
+                        }
+                    }
+                }
             }
         }
     });
