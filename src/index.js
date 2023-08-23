@@ -12,10 +12,7 @@ const owospeak = require("owospeak");
 const axios = require("axios");
 const r34API = require("r34.api");
 const { registerCommands } = require("./commandRegister");
-
-console.log(
-    "Crazy? I was crazy once. They locked me in a room. A rubber room. A rubber room with rats! The rats made me crazy."
-);
+const { logger } = require("./logger");
 
 registerCommands();
 
@@ -34,7 +31,7 @@ const headers = {
 };
 
 client.once(Events.ClientReady, (c) => {
-    console.log(`Ready! Logged in as ${c.user.tag}`);
+    logger.info(`Logged in as ${c.user.username}`);
 });
 
 client.on("messageCreate", (msg) => {
@@ -44,14 +41,14 @@ client.on("messageCreate", (msg) => {
             msg.content.toLowerCase().includes("crazy")
         ) {
             const reply = "Crazy? I was crazy once.";
-            console.log(
+            logger.info(
                 `Replying to ${msg.author.username}'s ${msg} with ${reply}`
             );
             msg.channel.send(reply);
         }
         if (msg.content.toLowerCase() == "crazy?") {
             const reply = "I was crazy once.";
-            console.log(
+            logger.info(
                 `Replying to ${msg.author.username}'s ${msg} with ${reply}`
             );
             msg.channel.send(reply);
@@ -62,7 +59,7 @@ client.on("messageCreate", (msg) => {
             msg.content.toLowerCase() == "i was crazy once!"
         ) {
             const reply = "They locked me in a room";
-            console.log(
+            logger.info(
                 `Replying to ${msg.author.username}'s ${msg} with ${reply}`
             );
             msg.channel.send(reply);
@@ -73,7 +70,7 @@ client.on("messageCreate", (msg) => {
             msg.content.toLowerCase() == "they locked me in a room!"
         ) {
             const reply = "A rubber room";
-            console.log(
+            logger.info(
                 `Replying to ${msg.author.username}'s ${msg} with ${reply}`
             );
             msg.channel.send(reply);
@@ -84,7 +81,7 @@ client.on("messageCreate", (msg) => {
             msg.content.toLowerCase() == "a rubber room!"
         ) {
             const reply = "A rubber room with rats";
-            console.log(
+            logger.info(
                 `Replying to ${msg.author.username}'s ${msg} with ${reply}`
             );
             msg.channel.send(reply);
@@ -95,7 +92,7 @@ client.on("messageCreate", (msg) => {
             msg.content.toLowerCase() == "a rubber room with rats!"
         ) {
             const reply = "The rats make me crazy";
-            console.log(
+            logger.info(
                 `Replying to ${msg.author.username}'s ${msg} with ${reply}`
             );
             msg.channel.send(reply);
@@ -109,7 +106,7 @@ client.on("messageCreate", (msg) => {
             msg.content.toLowerCase() == "toyota" &&
             msg.channelId == process.env.TOYOTA_CHANNEL_ID
         ) {
-            console.log(
+            logger.info(
                 `Replying to ${msg.author.username}'s ${msg} with Toyota`
             );
             msg.channel.send("Toyota");
@@ -120,7 +117,7 @@ client.on("messageCreate", (msg) => {
 client.on("messageCreate", (msg) => {
     if (!msg.author.bot) {
         if (msg.content.startsWith("!uwu")) {
-            console.log(`Uwuified ${msg.author.username}'s ${msg}`);
+            logger.info(`Uwuified ${msg.author.username}'s ${msg}`);
             msg.channel.send(
                 owospeak.convert(msg.content.replace("!uwu", ""), uwuProps)
             );
@@ -133,13 +130,13 @@ client.on("messageCreate", async (msg) => {
     if (!author.bot) {
         if (msg.content.startsWith("!stutter")) {
             if (isAdmin(author)) {
-                console.log(`Changed stutter options`);
+                logger.info(`Changed stutter options`);
                 uwuProps.stutter = !uwuProps.stutter;
                 msg.channel.send(
                     `Changed stutter options to ${uwuProps.stutter}`
                 );
             } else {
-                console.log(
+                logger.warn(
                     `${msg.author.username} tried to change stutter options`
                 );
                 msg.channel.send("Insufficient privileges");
@@ -147,11 +144,11 @@ client.on("messageCreate", async (msg) => {
         }
         if (msg.content.startsWith("!tilde")) {
             if (isAdmin(author)) {
-                console.log(`Changed tilde options`);
+                logger.info(`Changed tilde options`);
                 uwuProps.tilde = !uwuProps.tilde;
                 msg.channel.send(`Changed tilde options to ${uwuProps.tilde}`);
             } else {
-                console.log(
+                logger.warn(
                     `${msg.author.username} tried to change tilde options`
                 );
                 msg.channel.send("Insufficient privileges");
@@ -165,7 +162,7 @@ client.on("messageCreate", (msg) => {
     if (msg.author.bot) {
         if (msg.author.id == 159985870458322944) {
             if (msg.channelId != process.env.FORBIDEN_CHANNEL_ID) {
-                console.log(`Insulting mee6`);
+                logger.info(`Insulting mee6`);
                 const insults = [
                     "Shut it you slut. You aren't even worth the silicon you are stored on.",
                     "I have seen bots in furry servers better then you.",
@@ -196,7 +193,7 @@ client.on("messageCreate", (msg) => {
             const CATEGORIES = ["gay", "straight", "lesbian"];
             const CATEGORY = command[1];
             const COUNT = command[2];
-            console.log(
+            logger.info(
                 `${msg.author.username} requested ${COUNT} images of ${CATEGORY} furry porn`
             );
 
@@ -222,7 +219,7 @@ client.on("messageCreate", (msg) => {
                                 msg.author.send(res.data.images[0].url);
                             })
                             .catch((err) => {
-                                console.log("Rate limited");
+                                logger.info("Rate limited");
                             });
                     }, i * 2000);
                 }
@@ -241,7 +238,7 @@ client.on("messageCreate", (msg) => {
             const COUNT = command.pop();
             command.shift();
             const CATEGORY = command.toString();
-            console.log(
+            logger.info(
                 `${msg.author.username} requested ${COUNT} images of ${CATEGORY} hentai`
             );
 
@@ -292,7 +289,7 @@ client.on("interactionCreate", async (interaction) => {
                                         interaction.guild.roles
                                             .fetch(introRole)
                                             .then((role) => {
-                                                console.log(
+                                                logger.info(
                                                     `${mentor.displayName} has reverse introed ${introUser.displayName}`
                                                 );
                                                 interaction.editReply({
@@ -304,17 +301,17 @@ client.on("interactionCreate", async (interaction) => {
                                         interaction.guild.roles
                                             .fetch(introRole)
                                             .then((role) => {
-                                                console.log(
+                                                logger.error(
                                                     `${mentor.displayName} has tried to reverse intro ${introUser.displayName} but the role failed to be added`
                                                 );
-                                                console.error(err);
+                                                logger.error(err);
                                                 interaction.editReply({
                                                     content: `Failed to give role ${role.name} to ${introUser.displayName}`,
                                                 });
                                             });
                                     });
                             } else {
-                                console.log(
+                                logger.warn(
                                     `${mentor.displayName} tried to use the reverse intro command with insufficient privileges`
                                 );
                                 interaction.editReply({
@@ -343,7 +340,7 @@ client.on("interactionCreate", async (interaction) => {
                                         interaction.guild.roles
                                             .fetch(introRole)
                                             .then((role) => {
-                                                console.log(
+                                                logger.info(
                                                     `${mentor.displayName} has introed ${introUser.displayName}`
                                                 );
                                                 interaction.editReply({
@@ -355,17 +352,17 @@ client.on("interactionCreate", async (interaction) => {
                                         interaction.guild.roles
                                             .fetch(introRole)
                                             .then((role) => {
-                                                console.log(
+                                                logger.error(
                                                     `${mentor.displayName} has tried to intro ${introUser.displayName} but the role failed to be removed`
                                                 );
-                                                console.error(err);
+                                                logger.error(err);
                                                 interaction.editReply({
                                                     content: `Failed to remove role ${role.name} from ${introUser.displayName}`,
                                                 });
                                             });
                                     });
                             } else {
-                                console.log(
+                                logger.warn(
                                     `${mentor.displayName} tried to use the intro command with insufficient privileges`
                                 );
                                 interaction.editReply({
@@ -411,7 +408,7 @@ client.on("interactionCreate", async (interaction) => {
                                                 `Member was reverse promoted by ${interaction.client.user.username}`
                                             )
                                             .then(() => {
-                                                console.log(
+                                                logger.info(
                                                     `${mentor.displayName} has reverse promoted ${newMember.displayName}`
                                                 );
                                                 interaction.editReply({
@@ -419,26 +416,26 @@ client.on("interactionCreate", async (interaction) => {
                                                 });
                                             })
                                             .catch((err) => {
-                                                console.log(
+                                                logger.error(
                                                     `${mentor.displayName} has tried to reverse promote ${newMember.displayName} but the bot failed to add the promotion role`
                                                 );
-                                                console.error(err);
+                                                logger.error(err);
                                                 interaction.editReply({
                                                     content: `Tried to reverse promote ${newMember.displayName} but the bot failed`,
                                                 });
                                             });
                                     })
                                     .catch((err) => {
-                                        console.log(
+                                        logger.error(
                                             `${mentor.displayName} has tried to reverse promote ${newMember.displayName} but failed`
                                         );
-                                        console.error(err);
+                                        logger.error(err);
                                         interaction.editReply({
                                             content: `Tried to reverse promote ${newMember.displayName} but failed`,
                                         });
                                     });
                             } else {
-                                console.log(
+                                logger.warn(
                                     `${mentor.displayName} tried to use the reverse promote command with insufficient privileges`
                                 );
                                 interaction.editReply({
@@ -470,7 +467,7 @@ client.on("interactionCreate", async (interaction) => {
                                                 `Member was promoted by ${interaction.client.user.username}`
                                             )
                                             .then(() => {
-                                                console.log(
+                                                logger.info(
                                                     `${mentor.displayName} has promoted ${newMember.displayName}`
                                                 );
                                                 interaction.editReply({
@@ -478,26 +475,26 @@ client.on("interactionCreate", async (interaction) => {
                                                 });
                                             })
                                             .catch((err) => {
-                                                console.log(
+                                                logger.error(
                                                     `${mentor.displayName} has tried to promote ${newMember.displayName} but the bot failed to add the promotion role`
                                                 );
-                                                console.error(err);
+                                                logger.error(err);
                                                 interaction.editReply({
                                                     content: `Tried to promote ${newMember.displayName} but the bot failed to add the promotion role`,
                                                 });
                                             });
                                     })
                                     .catch((err) => {
-                                        console.log(
+                                        logger.error(
                                             `${mentor.displayName} has tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`
                                         );
-                                        console.error(err);
+                                        logger.error(err);
                                         interaction.editReply({
                                             content: `Tried to promote ${newMember.displayName} but the newcomer role(s) failed to be removed`,
                                         });
                                     });
                             } else {
-                                console.log(
+                                logger.warn(
                                     `${mentor.displayName} tried to use the promote command with insufficient privileges`
                                 );
                                 interaction.editReply({
@@ -555,7 +552,7 @@ client.on("interactionCreate", async (interaction) => {
                 });
             }
         } else {
-            console.log(
+            logger.warn(
                 `${initiator.displayName} tried to use the check command with insufficient priviliges`
             );
             interaction.editReply({
@@ -578,9 +575,9 @@ client.on("interactionCreate", async (interaction) => {
         const newcomerRole = process.env.NEWCOMER_ROLE;
 
         if (isAdmin(initiator)) {
-            console.log(`${initiator.displayName} has initiated an auto check`);
+            logger.info(`${initiator.displayName} has initiated an auto check`);
             guildMembers.forEach(async (subject) => {
-                console.log(`Checking ${subject.displayName}`);
+                logger.debug(`Checking ${subject.displayName}`);
                 if (getUserRoles(subject).includes(newcomerRole)) {
                     var today = new Date();
                     var Difference_In_Time =
@@ -594,7 +591,7 @@ client.on("interactionCreate", async (interaction) => {
                             if (subject.kickable) {
                                 if (!subject.user.bot) {
                                     subject.kick();
-                                    console.log(
+                                    logger.info(
                                         `${subject.displayName} with ID of ${subject.id} has been here for ${Difference_In_Days}days so he was kicked`
                                     );
                                     interaction.channel.send({
@@ -602,7 +599,7 @@ client.on("interactionCreate", async (interaction) => {
                                     });
                                 }
                             } else {
-                                console.log(
+                                logger.error(
                                     `It appears that for some reason ${subject.displayName} is un-kickable by the bot`
                                 );
                                 interaction.channel.send({
@@ -612,7 +609,7 @@ client.on("interactionCreate", async (interaction) => {
                         } else {
                             if (!subject.user.bot) {
                                 subject.roles.add(imposterRole);
-                                console.log(
+                                logger.info(
                                     `${subject.displayName} has been here for ${Difference_In_Days}days so he was given the imposter role`
                                 );
                                 interaction.channel.send({
@@ -627,7 +624,7 @@ client.on("interactionCreate", async (interaction) => {
                 content: "Operation completed successfuly(hopefully)",
             });
         } else {
-            console.log(
+            logger.warn(
                 `${initiator.displayName} tried to use the check command with insufficient priviliges`
             );
             interaction.editReply({

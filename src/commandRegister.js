@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { REST, Routes, ApplicationCommandOptionType } = require("discord.js");
+const { logger } = require("./logger");
 
 const commands = [
     {
@@ -60,7 +61,7 @@ const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 
 async function registerCommands() {
     try {
-        console.log("Registering slash commands...");
+        logger.info("Registering slash commands");
 
         await rest.put(
             Routes.applicationGuildCommands(
@@ -70,9 +71,10 @@ async function registerCommands() {
             { body: commands }
         );
 
-        console.log("Slash commands were registered successfully!");
+        logger.info("Slash commands were registered successfully!");
     } catch (error) {
-        console.log(`There was an error: ${error}`);
+        logger.error(`There was an error with registering slash commands`);
+        logger.error(error);
     }
 }
 
