@@ -4,14 +4,16 @@ const { uwuProps } = require("./uwu-props");
 
 function main(client) {
     logger.info("Registered uwu command");
-    client.on("messageCreate", (msg) => {
-        if (!msg.author.bot) {
-            if (msg.content.startsWith("!uwu")) {
-                logger.info(`Uwuified ${msg.author.username}'s ${msg}`);
-                msg.channel.send(
-                    owospeak.convert(msg.content.replace("!uwu", ""), uwuProps)
-                );
-            }
+    client.on("interactionCreate", (interaction) => {
+        if (!interaction.isChatInputCommand()) return;
+        if (interaction.commandName === "uwu") {
+            const message = interaction.options.get("message").value;
+            logger.info(`Uwuified ${interaction.user.username}'s ${message}`);
+            interaction.reply({
+                content: "Message UwU-ified",
+                ephemeral: true,
+            });
+            interaction.channel.send(owospeak.convert(message, uwuProps));
         }
     });
 }

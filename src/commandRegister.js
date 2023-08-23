@@ -97,6 +97,18 @@ const commands = [
             },
         ],
     },
+    {
+        name: "uwu",
+        description: "UwU-ify a message",
+        options: [
+            {
+                name: "message",
+                description: "Message to be UwU-ified",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+        ],
+    },
 ];
 
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
