@@ -1,6 +1,7 @@
-const { logger } = require("./logger");
+const { logger } = require("../logger");
 
 function main(client) {
+    logger.info("Registered crazy command");
     client.on("messageCreate", (msg) => {
         if (!msg.author.bot) {
             if (
@@ -67,3 +68,5 @@ function main(client) {
         }
     });
 }
+
+module.exports = { main };
