@@ -55,6 +55,24 @@ const commands = [
         name: "check-auto",
         description: "Check every single user to see if they are sus",
     },
+    {
+        name: "hentai",
+        description: "Sends you hentai",
+        options: [
+            {
+                name: "category",
+                description: "Categories you want. Seperated by coma",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name: "count",
+                description: "Number of images you want. Between 1 and 10",
+                type: ApplicationCommandOptionType.Number,
+                required: true,
+            },
+        ],
+    },
 ];
 
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);

@@ -1,38 +1,34 @@
+const { ChatInputCommandInteraction } = require("discord.js");
 const { logger } = require("../logger");
 const r34API = require("r34.api");
 
 function main(client) {
     logger.info("Registered hentai command");
-    client.on("messageCreate", (msg) => {
-        if (!msg.author.bot) {
-            if (msg.content.startsWith("!hentai")) {
-                var command = msg.content
-                    .toLowerCase()
-                    .replace("!hentai", "")
-                    .split(" ");
-                const COUNT = command.pop();
-                command.shift();
-                const CATEGORY = command.toString();
-                logger.info(
-                    `${msg.author.username} requested ${COUNT} images of ${CATEGORY} hentai`
-                );
 
-                if (COUNT <= 0 || COUNT > 10 || COUNT == undefined)
-                    msg.channel.send(
-                        "Wrong image count. You can only request between 1 and 10 images at a time."
-                    );
+    client.on("interactionCreate", (interaction) => {
+        if (!interaction.isChatInputCommand()) return;
 
-                if (COUNT > 0 && COUNT <= 10) {
-                    for (let i = 0; i < COUNT; i++) {
-                        setTimeout(() => {
-                            getHentai(CATEGORY).then((image) => {
-                                const toReturn = image.replaceAll('"', "");
-                                msg.author.send(toReturn);
-                            });
-                        }, i * 1500);
-                    }
-                }
-            }
+        const count = interaction.options.get("count").value;
+        const category = interaction.options.get("category").value;
+        logger.info(
+            `${interaction.user.username} requested ${count} images of ${category} hentai`
+        );
+
+        if (count <= 0 || count > 10 || count == undefined) {
+            interaction.editReply(
+                "Wrong image count. You can only request between 1 and 10 images at a time."
+            );
+            return;
+        }
+
+        interaction.reply(`Sending in ${count} images of ${category} hentai`);
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                getHentai(category).then((image) => {
+                    const toReturn = image.replaceAll('"', "");
+                    interaction.user.send(toReturn);
+                });
+            }, i * 1500);
         }
     });
 }
