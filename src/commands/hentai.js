@@ -8,27 +8,31 @@ function main(client) {
     client.on("interactionCreate", (interaction) => {
         if (!interaction.isChatInputCommand()) return;
 
-        const count = interaction.options.get("count").value;
-        const category = interaction.options.get("category").value;
-        logger.info(
-            `${interaction.user.username} requested ${count} images of ${category} hentai`
-        );
-
-        if (count <= 0 || count > 10 || count == undefined) {
-            interaction.editReply(
-                "Wrong image count. You can only request between 1 and 10 images at a time."
+        if (interaction.commandName === "hentai") {
+            const count = interaction.options.get("count").value;
+            const category = interaction.options.get("category").value;
+            logger.info(
+                `${interaction.user.username} requested ${count} images of ${category} hentai`
             );
-            return;
-        }
 
-        interaction.reply(`Sending in ${count} images of ${category} hentai`);
-        for (let i = 0; i < count; i++) {
-            setTimeout(() => {
-                getHentai(category).then((image) => {
-                    const toReturn = image.replaceAll('"', "");
-                    interaction.user.send(toReturn);
-                });
-            }, i * 1500);
+            if (count <= 0 || count > 10 || count == undefined) {
+                interaction.editReply(
+                    "Wrong image count. You can only request between 1 and 10 images at a time."
+                );
+                return;
+            }
+
+            interaction.reply(
+                `Sending in ${count} images of ${category} hentai`
+            );
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    getHentai(category).then((image) => {
+                        const toReturn = image.replaceAll('"', "");
+                        interaction.user.send(toReturn);
+                    });
+                }, i * 1500);
+            }
         }
     });
 }

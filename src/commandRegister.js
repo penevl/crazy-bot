@@ -73,6 +73,30 @@ const commands = [
             },
         ],
     },
+    {
+        name: "stutter",
+        description: "Turn UwU stutter on or off",
+        options: [
+            {
+                name: "value",
+                description: "Stutter value",
+                type: ApplicationCommandOptionType.Boolean,
+                required: true,
+            },
+        ],
+    },
+    {
+        name: "tilde",
+        description: "Turn UwU tilde on or off",
+        options: [
+            {
+                name: "value",
+                description: "Tilde value",
+                type: ApplicationCommandOptionType.Boolean,
+                required: true,
+            },
+        ],
+    },
 ];
 
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);

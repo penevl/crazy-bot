@@ -8,7 +8,7 @@ function main(client) {
         if (!msg.author.bot) {
             return;
         }
-        if (!msg.author.id == 159985870458322944) {
+        if (msg.author.id != 159985870458322944) {
             return;
         }
         if (msg.channelId == process.env.FORBIDEN_CHANNEL_ID) {
