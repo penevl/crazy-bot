@@ -1,8 +1,21 @@
+const { GuildMember } = require("discord.js");
+
 require("dotenv").config();
+
+/**Returns a random whole number with a min value of 0 and a max value the provided value
+ *
+ * @param {number} max
+ * @returns {number}
+ */
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
+/**
+ *
+ * @param {GuildMember} user
+ * @returns {string[]}
+ */
 function getUserRoles(user) {
     var roles = [];
     user.roles.cache.forEach((role) => {
@@ -11,6 +24,11 @@ function getUserRoles(user) {
     return roles;
 }
 
+/**
+ *
+ * @param {GuildMember} user
+ * @returns {boolean}
+ */
 function isAdmin(user) {
     const roles = getUserRoles(user);
     if (
