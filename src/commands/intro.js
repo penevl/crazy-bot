@@ -34,41 +34,41 @@ async function intro(interaction) {
     const introUser = await interaction.guild.members.fetch(introUserId);
     const mentor = await interaction.guild.members.fetch(interaction.user);
 
-    if (getUserRoles(mentor).includes(mentorRole) || isAdmin(mentor)) {
-        introUser.roles
-            .remove(
-                introRole,
-                `Member was introed by ${interaction.client.user.username}`
-            )
-            .then(() => {
-                interaction.guild.roles.fetch(introRole).then((role) => {
-                    logger.info(
-                        `${mentor.displayName} has introed ${introUser.displayName}`
-                    );
-                    interaction.editReply({
-                        content: `Successfuly removed role ${role.name} from ${introUser.displayName}`,
-                    });
-                });
-            })
-            .catch((err) => {
-                interaction.guild.roles.fetch(introRole).then((role) => {
-                    logger.error(
-                        `${mentor.displayName} has tried to intro ${introUser.displayName} but the role failed to be removed`
-                    );
-                    logger.error(err);
-                    interaction.editReply({
-                        content: `Failed to remove role ${role.name} from ${introUser.displayName}`,
-                    });
-                });
-            });
-    } else {
+    if (!(getUserRoles(mentor).includes(mentorRole) || isAdmin(mentor))) {
         logger.warn(
             `${mentor.displayName} tried to use the intro command with insufficient privileges`
         );
         interaction.editReply({
             content: `Insufficient privileges to use intro command`,
         });
+        return;
     }
+    introUser.roles
+        .remove(
+            introRole,
+            `Member was introed by ${interaction.client.user.username}`
+        )
+        .then(() => {
+            interaction.guild.roles.fetch(introRole).then((role) => {
+                logger.info(
+                    `${mentor.displayName} has introed ${introUser.displayName}`
+                );
+                interaction.editReply({
+                    content: `Successfuly removed role ${role.name} from ${introUser.displayName}`,
+                });
+            });
+        })
+        .catch((err) => {
+            interaction.guild.roles.fetch(introRole).then((role) => {
+                logger.error(
+                    `${mentor.displayName} has tried to intro ${introUser.displayName} but the role failed to be removed`
+                );
+                logger.error(err);
+                interaction.editReply({
+                    content: `Failed to remove role ${role.name} from ${introUser.displayName}`,
+                });
+            });
+        });
 }
 
 /**
