@@ -16,7 +16,7 @@ function main(client) {
             const imposterRole = process.env.IMPOSTER_ROLE;
             const newcomerRole = process.env.NEWCOMER_ROLE;
 
-            if (isAdmin(initiator)) {
+            if (!isAdmin(initiator)) {
                 logger.warn(
                     `${initiator.displayName} tried to use the check command with insufficient priviliges`
                 );
