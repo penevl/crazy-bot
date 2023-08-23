@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { logger } = require("../logger");
-const { getRandomInt } = require("../index");
+const { getRandomInt } = require("../functions");
 
 function main(client) {
     logger.info("Registered mee6 insulting command");

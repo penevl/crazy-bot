@@ -1,5 +1,5 @@
 const { logger } = require("../logger");
-const { isAdmin } = require("../index");
+const { isAdmin } = require("../functions");
 
 var uwuProps = { stutter: false, tilde: true };
 function main(client) {

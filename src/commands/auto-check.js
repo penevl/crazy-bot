@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { logger } = require("../logger");
-const { isAdmin, getUserRoles } = require("../index");
+const { isAdmin, getUserRoles } = require("../functions");
 
 function main(client) {
     logger.info("Registered auto-check command");

@@ -1,7 +1,0 @@
-const { logger } = require("../logger");
-
-function main(client) {
-    logger.info("Registered [COMMAND_NAME] command");
-}
-
-module.exports = { main };
