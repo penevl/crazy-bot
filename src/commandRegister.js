@@ -109,6 +109,24 @@ const commands = [
             },
         ],
     },
+    {
+        name: "yiff",
+        description: "Sends you yiff. Previously known as porn",
+        options: [
+            {
+                name: "category",
+                description: "Gay, Lesbian or Straight",
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name: "count",
+                description: "Number of images you want. Between 1 and 10",
+                type: ApplicationCommandOptionType.Number,
+                required: true,
+            },
+        ],
+    },
 ];
 
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
