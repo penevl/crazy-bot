@@ -39,4 +39,14 @@ function isAdmin(user) {
     }
 }
 
-module.exports = { getRandomInt, isAdmin, getUserRoles };
+/**
+ *
+ * @param {GuildMember} subject
+ */
+function calculateJoinTime(subject) {
+    var today = new Date();
+    var Difference_In_Time = subject.joinedAt.getTime() - today.getTime();
+    return Math.floor((Difference_In_Time / (1000 * 3600 * 24)) * -1);
+}
+
+module.exports = { getRandomInt, isAdmin, getUserRoles, calculateJoinTime };
