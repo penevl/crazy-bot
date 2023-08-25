@@ -1,4 +1,4 @@
-const { logger } = require("../logger");
+const { logger } = require("../utils/logger");
 const axios = require("axios");
 const headers = {
     "User-Agent": "elduko-discord-porn-bot discord-username-.elduko",

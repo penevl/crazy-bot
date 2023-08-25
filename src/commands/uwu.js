@@ -1,4 +1,4 @@
-const { logger } = require("../logger");
+const { logger } = require("../utils/logger");
 const owospeak = require("owospeak");
 const { uwuProps } = require("./uwu-props");
 

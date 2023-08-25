@@ -1,5 +1,5 @@
 const { ChatInputCommandInteraction } = require("discord.js");
-const { logger } = require("../logger");
+const { logger } = require("../utils/logger");
 const r34API = require("r34.api");
 
 function main(client) {

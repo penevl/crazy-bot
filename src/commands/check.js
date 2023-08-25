@@ -1,6 +1,10 @@
 require("dotenv").config();
-const { logger } = require("../logger");
-const { isAdmin, getUserRoles, calculateJoinTime } = require("../functions");
+const { logger } = require("../utils/logger");
+const {
+    isAdmin,
+    getUserRoles,
+    calculateJoinTime,
+} = require("../utils/functions");
 
 function main(client) {
     logger.info("Registered check command");

@@ -1,5 +1,5 @@
-const { logger } = require("../logger");
-const { isAdmin } = require("../functions");
+const { logger } = require("../utils/logger");
+const { isAdmin } = require("../utils/functions");
 
 var uwuProps = { stutter: true, tilde: true };
 function main(client) {

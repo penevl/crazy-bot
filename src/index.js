@@ -8,8 +8,8 @@ const {
     ButtonBuilder,
     ButtonStyle,
 } = require("discord.js");
-const { registerCommands } = require("./commandRegister");
-const { logger } = require("./logger");
+const { registerCommands } = require("./utils/commandRegister");
+const { logger } = require("./utils/logger");
 const path = require("path");
 const fs = require("fs");
 

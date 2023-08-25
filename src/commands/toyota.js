@@ -1,4 +1,4 @@
-const { logger } = require("../logger");
+const { logger } = require("../utils/logger");
 
 function main(client) {
     logger.info("Registered toyota command");
