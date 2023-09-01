@@ -1,7 +1,7 @@
 process.env.LOG_LEVEL = "debug";
 const { getConfig, setConfig, loadInitial } = require("./utils/config");
 loadInitial();
-const { client } = require("./utils/discordClient");
+const { client } = require("./utils/discord/client");
 const { Events } = require("discord.js");
 const { registerCommands } = require("./utils/commandRegister");
 const { logger } = require("./utils/logger");
