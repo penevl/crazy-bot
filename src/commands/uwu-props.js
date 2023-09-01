@@ -1,5 +1,5 @@
 const { logger } = require("../utils/logger");
-const { isAdmin } = require("../utils/functions");
+const { isAdmin } = require("../utils/discord/user");
 const { getConfig, setConfig } = require("../utils/config");
 
 function main(client) {

@@ -1,6 +1,6 @@
 require("dotenv").config();
 const { logger } = require("../utils/logger");
-const { isAdmin, getUserRoles } = require("../utils/functions");
+const { isAdmin, getUserRoles } = require("../utils/discord/user");
 const { ChatInputCommandInteraction } = require("discord.js");
 
 function main(client) {

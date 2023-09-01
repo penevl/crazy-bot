@@ -4,7 +4,7 @@ const {
     isAdmin,
     getUserRoles,
     calculateJoinTime,
-} = require("../utils/functions");
+} = require("../utils/discord/user");
 
 function main(client) {
     logger.info("Registered check command");
