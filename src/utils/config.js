@@ -16,6 +16,11 @@ function loadInitial() {
     }
 }
 
+/**
+ * 
+ * @param {String} config 
+ * @param {String} value 
+ */
 function setConfig(config, value) {
     process.env[config] = value;
     const configFile = readFileSync(
