@@ -3,7 +3,7 @@ const { getConfig, setConfig, loadInitial } = require("./utils/config");
 loadInitial();
 const { client } = require("./utils/discord/client");
 const { Events } = require("discord.js");
-const { registerCommands } = require("./utils/commandRegister");
+const { registerCommands } = require("./utils/discord/commandRegister");
 const { logger } = require("./utils/logger");
 const path = require("path");
 const fs = require("fs");
