@@ -10,102 +10,67 @@ function main(client) {
 
         if (interaction.commandName === "intro") {
             await interaction.deferReply({ ephemeral: true });
+
+            const mentorRole = process.env.MENTOR_ROLE;
+            const introUserId = interaction.options.get("user").value;
+            const introUser = await interaction.guild.members.fetch(
+                introUserId
+            );
+            const mentor = await interaction.guild.members.fetch(
+                interaction.user
+            );
+
+            const introUserEvent = new IntroUser();
+
+            introUserEvent.on("intro", (displayName, roleName) => {
+                interaction.editReply({
+                    content: `Successfuly removed role ${roleName} from ${displayName}`,
+                });
+            });
+
+            introUserEvent.on("reverse", (displayName, roleName) => {
+                interaction.editReply({
+                    content: `Successfuly added role ${roleName} to ${displayName}`,
+                });
+            });
+
+            introUserEvent.on("error", (err) => {
+                interaction.editReply({
+                    content: err.message,
+                });
+            });
+
             var reversed = false;
             try {
                 reversed = interaction.options.get("reverse").value;
             } catch (error) {}
             if (reversed) {
-                reverseIntro(interaction);
+                if (!isAdmin(mentor)) {
+                    logger.warn(
+                        `${mentor.displayName} tried to use the reverse intro command with insufficient privileges`
+                    );
+                    interaction.editReply({
+                        content: `Insufficient privileges to use reverse intro command`,
+                    });
+                    return;
+                }
+
+                introUserEvent.reverse(introUser);
             } else {
-                intro(interaction);
+                if (!(getUserRoles(mentor).includes(mentorRole) || isAdmin(mentor))) {
+                    logger.warn(
+                        `${mentor.displayName} tried to use the intro command with insufficient privileges`
+                    );
+                    interaction.editReply({
+                        content: `Insufficient privileges to use intro command`,
+                    });
+                    return;
+                }
+
+                introUserEvent.intro(introUser);
             }
         }
     });
-}
-
-/**
- *
- * @param {ChatInputCommandInteraction} interaction
- */
-async function intro(interaction) {
-    const mentorRole = process.env.MENTOR_ROLE;
-    const introUserId = interaction.options.get("user").value;
-    const introUser = await interaction.guild.members.fetch(introUserId);
-    const mentor = await interaction.guild.members.fetch(interaction.user);
-
-    if (!(getUserRoles(mentor).includes(mentorRole) || isAdmin(mentor))) {
-        logger.warn(
-            `${mentor.displayName} tried to use the intro command with insufficient privileges`
-        );
-        interaction.editReply({
-            content: `Insufficient privileges to use intro command`,
-        });
-        return;
-    }
-
-    const introUserEvent = new IntroUser();
-
-    introUserEvent.on("intro", (displayName, roleName) => {
-        interaction.editReply({
-            content: `Successfuly removed role ${roleName} from ${displayName}`,
-        });
-    });
-
-    introUserEvent.on("error", (err) => {
-        interaction.editReply({
-            content: err.message,
-        });
-    });
-
-    introUserEvent.intro(introUser);
-}
-
-/**
- *
- * @param {ChatInputCommandInteraction} interaction
- */
-async function reverseIntro(interaction) {
-    const introRole = process.env.INTRO_ROLE;
-    const introUserId = interaction.options.get("user").value;
-    const introUser = await interaction.guild.members.fetch(introUserId);
-    const mentor = await interaction.guild.members.fetch(interaction.user);
-
-    if (!isAdmin(mentor)) {
-        logger.warn(
-            `${mentor.displayName} tried to use the reverse intro command with insufficient privileges`
-        );
-        interaction.editReply({
-            content: `Insufficient privileges to use reverse intro command`,
-        });
-        return;
-    }
-
-    introUser.roles
-        .add(
-            introRole,
-            `Member was reverse introed by ${interaction.client.user.username}`
-        )
-        .then(() => {
-            interaction.guild.roles.fetch(introRole).then((role) => {
-                logger.info(
-                    `${mentor.displayName} has reverse introed ${introUser.displayName}`
-                );
-                interaction.editReply({
-                    content: `Successfuly gave role ${role.name} to ${introUser.displayName}`,
-                });
-            });
-        })
-        .catch((err) => {
-            interaction.guild.roles.fetch(introRole).then((role) => {
-                logger.error(
-                    `${mentor.displayName} has tried to reverse intro ${introUser.displayName} but the role failed to be added`
-                );
-                logger.error(err);
-                interaction.editReply({
-                    content: `Failed to give role ${role.name} to ${introUser.displayName}`,
-                });
-            });
-        });
 }
 
 module.exports = { main };
