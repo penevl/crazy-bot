@@ -1,10 +1,7 @@
 require("dotenv").config();
 const { logger } = require("../utils/logger");
-const {
-    isAdmin,
-    getUserRoles,
-    calculateJoinTime,
-} = require("../utils/discord/user");
+const { isAdmin } = require("../utils/discord/user");
+const { CheckUserActivity } = require("../utils/discord/CheckUserActivity");
 
 function main(client) {
     logger.info("Registered check command");
@@ -32,42 +29,28 @@ function main(client) {
                 return;
             }
 
-            if (getUserRoles(subject).includes(newcomerRole)) {
-                daysSinceJoin = calculateJoinTime(subject);
+            logger.info(`${initiator.displayName} has initiated a check`);
+            const checkUserActivity = new CheckUserActivity();
+            checkUserActivity.on("imposter", (displayName, daysSinceJoin) => {
+                interaction.editReply({
+                    content: `${displayName} has been here for ${daysSinceJoin} days so he was given the imposter role`,
+                });
+            });
 
-                if (daysSinceJoin >= 15 && daysSinceJoin < 30) {
-                    if (!subject.user.bot) {
-                        subject.roles.add(imposterRole);
-                        logger.info(
-                            `${subject.displayName} has been here for ${daysSinceJoin}days so he was given the imposter role`
-                        );
-                        interaction.channel.send({
-                            content: `${subject.displayName} has been here for ${daysSinceJoin}days so he was given the imposter role`,
-                        });
-                    }
-                }
+            checkUserActivity.on("kicked", (displayName, id, daysSinceJoin) => {
+                interaction.editReply({
+                    content: `${displayName} with ID of ${id} has been here for ${daysSinceJoin}days so he was kicked`,
+                });
+            });
 
-                if (daysSinceJoin >= 30) {
-                    if (!subject.user.bot) {
-                        if (subject.kickable) {
-                            subject.kick();
-                            logger.info(
-                                `${subject.displayName} with ID of ${subject.id} has been here for ${daysSinceJoin}days so he was kicked`
-                            );
-                            interaction.channel.send({
-                                content: `${subject.displayName} with ID of ${subject.id} has been here for ${daysSinceJoin}days so he was kicked`,
-                            });
-                        } else {
-                            logger.error(
-                                `It appears that for some reason ${subject.displayName} is un-kickable by the bot`
-                            );
-                            interaction.channel.send({
-                                content: `It appears that for some reason ${subject.displayName} is un-kickable by the bot`,
-                            });
-                        }
-                    }
-                }
-            }
+            checkUserActivity.on("error", (err) => {
+                logger.error(err);
+                interaction.editReply({
+                    content: `An error occured\n${err}`,
+                });
+            });
+
+            checkUserActivity.check(subject);
         }
     });
 }
