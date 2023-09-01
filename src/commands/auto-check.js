@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { logger } = require("../utils/logger");
 const { isAdmin } = require("../utils/discord/user");
-const { CheckUserActivity } = require("../utils/discord/checkUserActivity");
+const { CheckUserActivity } = require("../utils/discord/CheckUserActivity");
 const { GuildMember } = require("discord.js");
 
 function main(client) {
