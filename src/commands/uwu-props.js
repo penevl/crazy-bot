@@ -1,7 +1,7 @@
 const { logger } = require("../utils/logger");
 const { isAdmin } = require("../utils/functions");
+const { getConfig, setConfig } = require("../utils/config");
 
-var uwuProps = { stutter: true, tilde: true };
 function main(client) {
     logger.info("Registered uwu-props command");
     client.on("interactionCreate", async (interaction) => {
@@ -23,9 +23,11 @@ function main(client) {
                 return;
             }
             logger.info(`Changed stutter options`);
-            uwuProps.stutter = interaction.options.get("value").value;
+            // uwuProps.stutter = interaction.options.get("value").value;
+            const stutterValue = await interaction.options.get("value").value;
+            setConfig("LOG_LEVEL", stutterValue.toString());
             interaction.reply({
-                content: `Changed stutter options to ${uwuProps.stutter}`,
+                content: `Changed stutter options to ${process.env.STUTTER}`,
                 ephemeral: true,
             });
         }
@@ -49,4 +51,4 @@ function main(client) {
     });
 }
 
-module.exports = { main, uwuProps };
+module.exports = { main };

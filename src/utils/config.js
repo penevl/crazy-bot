@@ -1,17 +1,6 @@
 const { logger } = require("./logger");
 const { readFileSync, writeFile } = require("fs");
 
-function getConfig(config) {
-    const configFile = readFileSync(
-        `${process.env.PWD}/config.json`,
-        {
-            encoding: "utf-8",
-        }
-    );
-    const json = JSON.parse(configFile);
-    return json[config];
-}
-
 function loadInitial() {
     const configFile = readFileSync(
         `${process.env.PWD}/config.json`,
@@ -41,4 +30,4 @@ function setConfig(config, value) {
     writeFile(`${process.env.PWD}/config.json`, newJson, () => {});
 }
 
-module.exports = { getConfig, setConfig, loadInitial };
+module.exports = { setConfig, loadInitial };
