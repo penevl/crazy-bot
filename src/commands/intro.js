@@ -1,7 +1,7 @@
-require("dotenv").config();
 const { logger } = require("../utils/logger");
 const { isAdmin, getUserRoles } = require("../utils/discord/user");
 const { ChatInputCommandInteraction } = require("discord.js");
+const { IntroUser } = require("../utils/discord/IntroUser");
 
 function main(client) {
     logger.info("Registered intro command(s)");
@@ -9,11 +9,11 @@ function main(client) {
         if (!interaction.isChatInputCommand()) return;
 
         if (interaction.commandName === "intro") {
+            await interaction.deferReply({ ephemeral: true });
             var reversed = false;
             try {
                 reversed = interaction.options.get("reverse").value;
             } catch (error) {}
-            await interaction.deferReply({ ephemeral: true });
             if (reversed) {
                 reverseIntro(interaction);
             } else {
@@ -28,7 +28,6 @@ function main(client) {
  * @param {ChatInputCommandInteraction} interaction
  */
 async function intro(interaction) {
-    const introRole = process.env.INTRO_ROLE;
     const mentorRole = process.env.MENTOR_ROLE;
     const introUserId = interaction.options.get("user").value;
     const introUser = await interaction.guild.members.fetch(introUserId);
@@ -43,32 +42,22 @@ async function intro(interaction) {
         });
         return;
     }
-    introUser.roles
-        .remove(
-            introRole,
-            `Member was introed by ${interaction.client.user.username}`
-        )
-        .then(() => {
-            interaction.guild.roles.fetch(introRole).then((role) => {
-                logger.info(
-                    `${mentor.displayName} has introed ${introUser.displayName}`
-                );
-                interaction.editReply({
-                    content: `Successfuly removed role ${role.name} from ${introUser.displayName}`,
-                });
-            });
-        })
-        .catch((err) => {
-            interaction.guild.roles.fetch(introRole).then((role) => {
-                logger.error(
-                    `${mentor.displayName} has tried to intro ${introUser.displayName} but the role failed to be removed`
-                );
-                logger.error(err);
-                interaction.editReply({
-                    content: `Failed to remove role ${role.name} from ${introUser.displayName}`,
-                });
-            });
+
+    const introUserEvent = new IntroUser();
+
+    introUserEvent.on("intro", (displayName, roleName) => {
+        interaction.editReply({
+            content: `Successfuly removed role ${roleName} from ${displayName}`,
         });
+    });
+
+    introUserEvent.on("error", (err) => {
+        interaction.editReply({
+            content: err.message,
+        });
+    });
+
+    introUserEvent.intro(introUser);
 }
 
 /**
