@@ -15,7 +15,7 @@ const { logger } = require("./utils/logger");
 const path = require("path");
 const fs = require("fs");
 
-// registerCommands();
+registerCommands();
 
 const client = new Client({
     intents: [
@@ -45,4 +45,4 @@ client.once(Events.ClientReady, (c) => {
     });
 });
 
-// client.login(process.env.TOKEN);
+client.login(process.env.TOKEN);
