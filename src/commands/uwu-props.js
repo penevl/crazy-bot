@@ -25,7 +25,7 @@ function main(client) {
             logger.info(`Changed stutter options`);
             // uwuProps.stutter = interaction.options.get("value").value;
             const stutterValue = await interaction.options.get("value").value;
-            setConfig("LOG_LEVEL", stutterValue.toString());
+            setConfig("STUTTER", stutterValue.toString());
             interaction.reply({
                 content: `Changed stutter options to ${process.env.STUTTER}`,
                 ephemeral: true,
