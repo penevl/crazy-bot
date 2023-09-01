@@ -42,9 +42,11 @@ function main(client) {
                 });
             }
             logger.info(`Changed tilde options`);
-            uwuProps.tilde = interaction.options.get("value").value;
+            // uwuProps.tilde = interaction.options.get("value").value;
+            const tildeValue = await interaction.options.get("value").value;
+            setConfig("TILDE", tildeValue.toString());
             interaction.reply({
-                content: `Changed tilde options to ${uwuProps.tilde}`,
+                content: `Changed tilde options to ${process.env.TILDE}`,
                 ephemeral: true,
             });
         }
