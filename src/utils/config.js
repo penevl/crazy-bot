@@ -3,7 +3,7 @@ const { readFileSync, writeFile } = require("fs");
 
 function getConfig(config) {
     const configFile = readFileSync(
-        "/home/elduko/projects/crazy-bot/config.json",
+        `${process.env.PWD}/config.json`,
         {
             encoding: "utf-8",
         }
@@ -14,7 +14,7 @@ function getConfig(config) {
 
 function loadInitial() {
     const configFile = readFileSync(
-        "/home/elduko/projects/crazy-bot/config.json",
+        `${process.env.PWD}/config.json`,
         {
             encoding: "utf-8",
         }
@@ -30,7 +30,7 @@ function loadInitial() {
 function setConfig(config, value) {
     process.env[config] = value;
     const configFile = readFileSync(
-        "/home/elduko/projects/crazy-bot/config.json",
+        `${process.env.PWD}/config.json`,
         {
             encoding: "utf-8",
         }
@@ -38,7 +38,7 @@ function setConfig(config, value) {
     var json = JSON.parse(configFile);
     json[config] = value;
     const newJson = JSON.stringify(json);
-    writeFile("/home/elduko/projects/crazy-bot/config.json", newJson, () => {});
+    writeFile(`${process.env.PWD}/config.json`, newJson, () => {});
 }
 
 module.exports = { getConfig, setConfig, loadInitial };
