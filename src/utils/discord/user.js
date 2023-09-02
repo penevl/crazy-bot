@@ -31,7 +31,6 @@ function isAdmin(user) {
     var toReturn = false;
     process.env.ADMIN_ROLES.split(",").forEach((adminRole) => {
         if (roles.includes(adminRole) || user.id == process.env.OWNER_ID) {
-            console.log(`Return true`);
             toReturn = true;
         }
     });
