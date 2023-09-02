@@ -28,12 +28,11 @@ function getUserRoles(user) {
  */
 function isAdmin(user) {
     const roles = getUserRoles(user);
-    if (
-        roles.includes(process.env.ADMIN_ROLE_ID) ||
-        user.id == process.env.OWNER_ID
-    ) {
-        return true;
-    }
+    process.env.ADMIN_ROLES.forEach((adminRole) => {
+        if (roles.includes(adminRole) || user.id == process.env.OWNER_ID) {
+            return true;
+        }
+    });
 }
 
-module.exports = { calculateJoinTime, getUserRoles, isAdmin }
+module.exports = { calculateJoinTime, getUserRoles, isAdmin };
