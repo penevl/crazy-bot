@@ -1,0 +1,38 @@
+{
+    "env": {
+        "commonjs": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    },
+    "rules": {
+        "indent": [
+            "error",
+            4
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "warn",
+            "double"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-console": "warn",
+        "no-const-assign": "error",
+        "no-duplicate-imports": "error",
+        "no-unused-vars": "warn",
+        "no-duplicate-case": "error",
+        "no-dupe-args": "error",
+        "no-fallthrough": "error",
+        "no-use-before-define": "error",
+        "require-await": "error"
+    }
+}
