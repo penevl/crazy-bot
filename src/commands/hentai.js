@@ -1,4 +1,3 @@
-const { ChatInputCommandInteraction } = require("discord.js");
 const { logger } = require("../utils/logger");
 const r34API = require("r34.api");
 
@@ -27,7 +26,9 @@ function main(client) {
             );
             for (let i = 0; i < count; i++) {
                 setTimeout(() => {
+                    // eslint-disable-next-line no-use-before-define
                     getHentai(category).then((image) => {
+                        // eslint-disable-next-line quotes
                         const toReturn = image.replaceAll('"', "");
                         interaction.user.send(toReturn);
                     });

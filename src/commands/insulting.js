@@ -14,7 +14,7 @@ function main(client) {
         if (msg.channelId == process.env.FORBIDEN_CHANNEL_ID) {
             return;
         }
-        logger.info(`Insulting mee6`);
+        logger.info("Insulting mee6");
         const insults = [
             "Shut it you slut. You aren't even worth the silicon you are stored on.",
             "I have seen bots in furry servers better then you.",

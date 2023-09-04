@@ -16,8 +16,6 @@ function main(client) {
             const subject = await interaction.guild.members.fetch(
                 interaction.options.get("user").value
             );
-            const imposterRole = process.env.IMPOSTER_ROLE;
-            const newcomerRole = process.env.NEWCOMER_ROLE;
 
             if (!isAdmin(initiator)) {
                 logger.warn(

@@ -1,7 +1,6 @@
 require("dotenv").config();
 const { logger } = require("../utils/logger");
 const { isAdmin, getUserRoles } = require("../utils/discord/user");
-const { ChatInputCommandInteraction } = require("discord.js");
 const { PromoteUser } = require("../utils/discord/PromoteUser");
 
 function main(client) {
@@ -44,6 +43,7 @@ function main(client) {
             var reversed = false;
             try {
                 reversed = interaction.options.get("reverse").value;
+            // eslint-disable-next-line no-empty
             } catch (error) {}
             if (reversed) {
                 if (isAdmin(mentor)) {
@@ -53,7 +53,7 @@ function main(client) {
                         `${mentor.displayName} tried to use the reverse promote command with insufficient privileges`
                     );
                     interaction.editReply({
-                        content: `Insufficient privileges to use reverse promote command`,
+                        content: "Insufficient privileges to use reverse promote command",
                     });
                 }
             } else {
@@ -67,7 +67,7 @@ function main(client) {
                         `${mentor.displayName} tried to use the promote command with insufficient privileges`
                     );
                     interaction.editReply({
-                        content: `Insufficient privileges to use promote command`,
+                        content: "Insufficient privileges to use promote command",
                     });
                     return;
                 }

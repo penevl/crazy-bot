@@ -5,7 +5,6 @@
 function calculateJoinTime(subject) {
     var today = new Date();
     var Difference_In_Time = subject.joinedAt.getTime() - today.getTime();
-    console.log("Gay");
     return Math.floor((Difference_In_Time / (1000 * 3600 * 24)) * -1);
 }
 

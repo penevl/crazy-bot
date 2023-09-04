@@ -1,6 +1,6 @@
 const { logger } = require("../utils/logger");
 const { isAdmin } = require("../utils/discord/user");
-const { getConfig, setConfig } = require("../utils/config");
+const { setConfig } = require("../utils/config");
 
 function main(client) {
     logger.info("Registered uwu-props command");
@@ -22,7 +22,7 @@ function main(client) {
                 });
                 return;
             }
-            logger.info(`Changed stutter options`);
+            logger.info("Changed stutter options");
             // uwuProps.stutter = interaction.options.get("value").value;
             const stutterValue = await interaction.options.get("value").value;
             setConfig("STUTTER", stutterValue.toString());
@@ -41,7 +41,7 @@ function main(client) {
                     ephemeral: true,
                 });
             }
-            logger.info(`Changed tilde options`);
+            logger.info("Changed tilde options");
             // uwuProps.tilde = interaction.options.get("value").value;
             const tildeValue = await interaction.options.get("value").value;
             setConfig("TILDE", tildeValue.toString());

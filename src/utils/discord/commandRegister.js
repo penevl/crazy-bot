@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 require("dotenv").config();
 const { REST, Routes, ApplicationCommandOptionType } = require("discord.js");
 const { logger } = require("../logger");
@@ -145,7 +146,7 @@ async function registerCommands() {
 
         logger.info("Slash commands were registered successfully!");
     } catch (error) {
-        logger.error(`There was an error with registering slash commands`);
+        logger.error("There was an error with registering slash commands");
         logger.error(error);
     }
 }

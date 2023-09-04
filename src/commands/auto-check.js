@@ -2,7 +2,6 @@ require("dotenv").config();
 const { logger } = require("../utils/logger");
 const { isAdmin } = require("../utils/discord/user");
 const { CheckUserActivity } = require("../utils/discord/CheckUserActivity");
-const { GuildMember } = require("discord.js");
 
 function main(client) {
     logger.info("Registered auto-check command");
@@ -14,8 +13,6 @@ function main(client) {
                 interaction.user.id
             );
             const guildMembers = await interaction.guild.members.fetch();
-            const imposterRole = process.env.IMPOSTER_ROLE;
-            const newcomerRole = process.env.NEWCOMER_ROLE;
 
             if (!isAdmin(initiator)) {
                 logger.warn(
@@ -47,7 +44,7 @@ function main(client) {
                     content: `An error occured\n${err}`,
                 });
             });
-            guildMembers.forEach(async (subject) => {
+            guildMembers.forEach((subject) => {
                 checkUserActivity.check(subject);
             });
             interaction.editReply({

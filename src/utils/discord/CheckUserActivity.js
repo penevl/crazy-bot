@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const { GuildMember } = require("discord.js");
 const { logger } = require("../logger");
 const { getUserRoles, calculateJoinTime } = require("./user");
@@ -16,11 +17,11 @@ class CheckUserActivity extends EventEmitter {
 
             if (daysSinceJoin >= 15 && daysSinceJoin < 30) {
                 if (subject.user.bot) {
-                subject.roles.add(imposterRole);
-                logger.info(
-                    `${subject.displayName} has been here for ${daysSinceJoin}days so he was given the imposter role`
-                );
-                this.emit("imposter", subject.displayName, daysSinceJoin);
+                    subject.roles.add(imposterRole);
+                    logger.info(
+                        `${subject.displayName} has been here for ${daysSinceJoin}days so he was given the imposter role`
+                    );
+                    this.emit("imposter", subject.displayName, daysSinceJoin);
                 }
             }
 

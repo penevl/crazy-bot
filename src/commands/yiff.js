@@ -49,6 +49,7 @@ function main(client) {
                         })
                         .catch((err) => {
                             logger.error("Rate limited");
+                            logger.error(err.message);
                         });
                 }, i * 2000);
             }

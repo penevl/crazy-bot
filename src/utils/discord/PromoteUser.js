@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const { GuildMember } = require("discord.js");
 const { logger } = require("../logger");
 const EventEmitter = require("node:events");
@@ -79,7 +80,7 @@ class PromoteUser extends EventEmitter {
             })
             .catch((err) => {
                 logger.error(
-                    `${mentor.displayName} has tried to reverse promote ${user.displayName} but failed`
+                    `Tried to reverse promote ${user.displayName} but failed`
                 );
                 logger.error(err);
                 this.emit(

@@ -3,6 +3,7 @@ const winston = require("winston");
 const LOG_LEVEL = process.env.LOG_LEVEL;
 
 if (LOG_LEVEL == null || LOG_LEVEL == "") {
+    // eslint-disable-next-line no-console
     console.error("LOG_LEVEL not deffined");
     process.exit(-1);
 }

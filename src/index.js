@@ -1,5 +1,6 @@
+/* eslint-disable linebreak-style */
 process.env.LOG_LEVEL = "debug";
-const { getConfig, setConfig, loadInitial } = require("./utils/config");
+const { loadInitial } = require("./utils/config");
 loadInitial();
 const { client } = require("./utils/discord/client");
 const { Events } = require("discord.js");

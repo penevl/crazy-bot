@@ -1,5 +1,3 @@
-const { GuildMember } = require("discord.js");
-
 require("dotenv").config();
 
 /**Returns a random whole number with a min value of 0 and a max value the provided value
