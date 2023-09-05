@@ -8,8 +8,10 @@ const { registerCommands } = require("./utils/discord/commandRegister");
 const { logger } = require("./utils/logger");
 const path = require("path");
 const fs = require("fs");
+const { start } = require("./utils/express/server");
 
 registerCommands();
+start(process.env.WEB_PORT);
 
 client.once(Events.ClientReady, (c) => {
     logger.info(`Logged in as ${c.user.username}`);

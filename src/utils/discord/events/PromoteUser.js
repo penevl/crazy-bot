@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 const { GuildMember } = require("discord.js");
-const { logger } = require("../logger");
+const { logger } = require("../../logger");
 const EventEmitter = require("node:events");
 
 class PromoteUser extends EventEmitter {
