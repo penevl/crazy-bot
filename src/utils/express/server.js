@@ -51,23 +51,10 @@ app.post(
     "/login",
     passport.authenticate("local", {
         successRedirect: "/",
-        failureRedirect: "/users",
+        failureRedirect: "/login",
         failureFlash: false,
     })
 );
-
-app.get("/register", (req, res) => {
-    res.render("register");
-});
-
-app.post("/register", (req, res) => {
-    users.push({
-        id: Date.now().toString(),
-        username: req.body.username,
-        password: req.body.password,
-    });
-    res.redirect("/login");
-});
 
 app.post("/logout", (req, res) => {
     req.logOut((err) => {
