@@ -1,6 +1,6 @@
 const { logger } = require("../utils/logger");
 const { isAdmin, getUserRoles } = require("../utils/discord/user");
-const { IntroUser } = require("../utils/discord/IntroUser");
+const { IntroUser } = require("../utils/discord/events/IntroUser");
 
 function main(client) {
     logger.info("Registered intro command(s)");

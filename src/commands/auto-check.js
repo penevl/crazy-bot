@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { logger } = require("../utils/logger");
 const { isAdmin } = require("../utils/discord/user");
-const { CheckUserActivity } = require("../utils/discord/CheckUserActivity");
+const { CheckUserActivity } = require("../utils/discord/events/CheckUserActivity");
 
 function main(client) {
     logger.info("Registered auto-check command");

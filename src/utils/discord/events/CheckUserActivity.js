@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 const { GuildMember } = require("discord.js");
-const { logger } = require("../logger");
-const { getUserRoles, calculateJoinTime } = require("./user");
+const { logger } = require("../../logger");
+const { getUserRoles, calculateJoinTime } = require("../user");
 const EventEmitter = require("node:events");
 
 class CheckUserActivity extends EventEmitter {

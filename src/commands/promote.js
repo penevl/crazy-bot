@@ -1,7 +1,7 @@
 require("dotenv").config();
 const { logger } = require("../utils/logger");
 const { isAdmin, getUserRoles } = require("../utils/discord/user");
-const { PromoteUser } = require("../utils/discord/PromoteUser");
+const { PromoteUser } = require("../utils/discord/events/PromoteUser");
 
 function main(client) {
     logger.info("Registered promote command(s)");
