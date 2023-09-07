@@ -1,4 +1,6 @@
 const { logger } = require("../logger");
+const { writeFile } = require("fs");
+const users = require("../../../users.json");
 
 /**
  *
@@ -9,11 +11,29 @@ const { logger } = require("../logger");
  * }]}
  */
 function getUsers() {
-    const WEB_USERS = process.env.WEB_USERS;
-    logger.debug(`WEB_USERS: ${JSON.stringify(WEB_USERS)}`);
-    const users = JSON.parse(WEB_USERS);
-    logger.debug(`users return: ${JSON.stringify(users)}`);
+    logger.debug(JSON.stringify(users));
     return users;
 }
 
-module.exports = { getUsers };
+/**
+ *
+ * @param {String} username
+ * @param {String} password
+ * @returns {Number}
+ */
+function addUser(username, password) {
+    const id = Number(Date.now().toString());
+    users.push({
+        id: id,
+        username: username,
+        password: password,
+    });
+    logger.debug(`Saving users: ${JSON.stringify(users)}`);
+    logger.info(`Adding user ${username} to users file.`);
+    writeFile("users.json", JSON.stringify(users), (err) => {
+        if (err) logger.error(err);
+    });
+    return id;
+}
+
+module.exports = { getUsers, addUser };

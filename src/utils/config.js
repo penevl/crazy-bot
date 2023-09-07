@@ -8,13 +8,8 @@ function loadInitial() {
     const json = JSON.parse(configFile);
     const obj = Object(json);
     for (const [key, value] of Object.entries(obj)) {
-        if (key === "WEB_USERS") {
-            logger.debug(`Setting ${key} to ${JSON.stringify(value)}`);
-            process.env[key] = JSON.stringify(value);
-        } else {
-            logger.debug(`Setting ${key} to ${value}`);
-            process.env[key] = value;
-        }
+        logger.debug(`Setting ${key} to ${value}`);
+        process.env[key] = value;
     }
 }
 

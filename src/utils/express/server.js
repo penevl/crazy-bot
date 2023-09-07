@@ -5,7 +5,7 @@ const session = require("express-session");
 const { logger } = require("../logger");
 const rootRouter = require("../../../routes/root");
 const { initialize } = require("./passport");
-const { getUsers } = require("./users");
+const { getUsers, addUser } = require("./users");
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false })); // Read form data
@@ -29,11 +29,7 @@ function findUserById(id) {
     return users.find((user) => user.id === id);
 }
 
-initialize(
-    passport,
-    findUser,
-    findUserById
-);
+initialize(passport, findUser, findUserById);
 
 app.use("/", rootRouter);
 
