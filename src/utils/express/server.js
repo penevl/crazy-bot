@@ -5,6 +5,7 @@ const session = require("express-session");
 const { logger } = require("../logger");
 const rootRouter = require("../../../routes/root");
 const { initialize } = require("./passport");
+const { getUsers } = require("./users");
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false })); // Read form data
@@ -18,18 +19,20 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-var users = [
-    {
-        id: 123456,
-        username: "elduko",
-        password: "gay",
-    },
-];
+function findUser(username) {
+    const users = getUsers();
+    return users.find((user) => user.username === username);
+}
+
+function findUserById(id) {
+    const users = getUsers();
+    return users.find((user) => user.id === id);
+}
 
 initialize(
     passport,
-    (username) => users.find((user) => user.username === username),
-    (id) => users.find((user) => user.id === id)
+    findUser,
+    findUserById
 );
 
 app.use("/", rootRouter);
