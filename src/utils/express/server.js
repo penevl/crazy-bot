@@ -1,24 +1,10 @@
 const express = require("express");
 const app = express();
 const passport = require("passport");
-const { initialize } = require("./passport");
 const session = require("express-session");
 const { logger } = require("../logger");
-
-var users = [
-    {
-        id: 123456,
-        username: "elduko",
-        password: "gay",
-    },
-];
-
-function checkAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect("/login");
-}
+const rootRouter = require("../../../routes/root");
+const { initialize } = require("./passport");
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false })); // Read form data
@@ -31,39 +17,22 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+var users = [
+    {
+        id: 123456,
+        username: "elduko",
+        password: "gay",
+    },
+];
+
 initialize(
     passport,
     (username) => users.find((user) => user.username === username),
     (id) => users.find((user) => user.id === id)
 );
 
-app.get("/", checkAuthenticated, (req, res) => {
-    res.render("index", {
-        users: users,
-    });
-});
-
-app.get("/login", (req, res) => {
-    res.render("login");
-});
-
-app.post(
-    "/login",
-    passport.authenticate("local", {
-        successRedirect: "/",
-        failureRedirect: "/login",
-        failureFlash: false,
-    })
-);
-
-app.post("/logout", (req, res) => {
-    req.logOut((err) => {
-        if (err) {
-            logger.error(`Failed to logout user ${req.user.username}`);
-        }
-    });
-    res.redirect("/login");
-});
+app.use("/", rootRouter);
 
 /**
  *

@@ -10,12 +10,13 @@ function main(client) {
             const channel = interaction.channel;
             const member = interaction.member;
             const memberPfp = member.displayAvatarURL();
-            const memberNickname = member.nickname;
+            // const memberNickname = member.nickname;
+            const memberNickname = null;
             logger.debug(memberNickname);
             logger.debug(memberPfp);
             logger.debug(member);
             const webhook = await channel.createWebhook({
-                name: memberNickname,
+                name: memberNickname || member.displayName,
                 avatar: memberPfp,
                 reason: "Needed a webhook for uwu",
             });

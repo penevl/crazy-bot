@@ -1,16 +1,7 @@
 const { logger } = require("../src/utils/logger");
 const express = require("express");
-const router = express.Router();
+const rootRouter = express.Router();
 const passport = require("passport");
-const { initialize } = require("../src/utils/express/passport");
-
-var users = [
-    {
-        id: 123456,
-        username: "elduko",
-        password: "gay",
-    },
-];
 
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -19,23 +10,23 @@ function checkAuthenticated(req, res, next) {
     res.redirect("/login");
 }
 
-initialize(
-    passport,
-    (username) => users.find((user) => user.username === username),
-    (id) => users.find((user) => user.id === id)
-);
-
-router.get("/", checkAuthenticated, (req, res) => {
+rootRouter.get("/", checkAuthenticated, (req, res) => {
     res.render("index", {
-        users: users,
+        users: [
+            {
+                id: 123456,
+                username: "elduko",
+                password: "gay",
+            },
+        ],
     });
 });
 
-router.get("/login", (req, res) => {
+rootRouter.get("/login", (req, res) => {
     res.render("login");
 });
 
-router.post(
+rootRouter.post(
     "/login",
     passport.authenticate("local", {
         successRedirect: "/",
@@ -44,7 +35,7 @@ router.post(
     })
 );
 
-router.post("/logout", (req, res) => {
+rootRouter.post("/logout", (req, res) => {
     req.logOut((err) => {
         if (err) {
             logger.error(`Failed to logout user ${req.user.username}`);
@@ -53,4 +44,4 @@ router.post("/logout", (req, res) => {
     res.redirect("/login");
 });
 
-module.exports = { router };
+module.exports = rootRouter;
