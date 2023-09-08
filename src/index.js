@@ -10,7 +10,7 @@ const path = require("path");
 const fs = require("fs");
 const { start } = require("./utils/express/server");
 
-registerCommands();
+// registerCommands();
 start(process.env.WEB_PORT);
 
 client.once(Events.ClientReady, (c) => {
@@ -32,4 +32,4 @@ client.once(Events.ClientReady, (c) => {
     });
 });
 
-client.login(process.env.TOKEN);
+// client.login(process.env.TOKEN);
