@@ -4,7 +4,6 @@ const { isAdmin } = require("../utils/discord/user");
 const {
     CheckUserActivity,
 } = require("../utils/discord/events/CheckUserActivity");
-const { GuildMember } = require("discord.js");
 
 function main(client) {
     logger.info("Registered auto-check command");
