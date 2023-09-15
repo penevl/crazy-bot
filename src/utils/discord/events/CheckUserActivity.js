@@ -9,7 +9,6 @@ class CheckUserActivity extends EventEmitter {
      * @param {GuildMember} subject
      */
     check(subject) {
-        const imposterRole = process.env.IMPOSTER_ROLE;
         const newcomerRole = process.env.NEWCOMER_ROLE;
         logger.debug(`Checking ${subject.displayName}`);
         if (getUserRoles(subject).includes(newcomerRole)) {
@@ -35,15 +34,16 @@ class CheckUserActivity extends EventEmitter {
             if (daysSinceJoin >= 30) {
                 if (!subject.user.bot) {
                     if (subject.kickable) {
-                        subject.kick();
+                        usersToKick.push(subject);
                         logger.info(
-                            `${subject.displayName} with ID of ${subject.id} has been here for ${daysSinceJoin}days so he was kicked`
+                            `${subject.displayName} with ID of ${subject.id} has been here for ${daysSinceJoin}days so he was added to kick list`
                         );
                         this.emit(
                             "kicked",
                             subject.displayName,
                             subject.id,
-                            daysSinceJoin
+                            daysSinceJoin,
+                            usersToKick
                         );
                     } else {
                         logger.error(
