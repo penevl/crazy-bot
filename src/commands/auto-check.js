@@ -4,6 +4,7 @@ const { isAdmin } = require("../utils/discord/user");
 const {
     CheckUserActivity,
 } = require("../utils/discord/events/CheckUserActivity");
+const { GuildMember } = require("discord.js");
 
 function main(client) {
     logger.info("Registered auto-check command");
@@ -35,9 +36,10 @@ function main(client) {
                 });
             });
 
-            checkUserActivity.on("kicked", (displayName, id, daysSinceJoin) => {
+            checkUserActivity.on("kicked", (subject, daysSinceJoin) => {
+                subject.kick();
                 interaction.channel.send({
-                    content: `${displayName} with ID of ${id} has been here for ${daysSinceJoin}days so he was kicked`,
+                    content: `${subject.displayName} with ID of ${subject.id} has been here for ${daysSinceJoin}days so he was kicked`,
                 });
             });
 

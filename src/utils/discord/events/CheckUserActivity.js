@@ -27,7 +27,7 @@ class CheckUserActivity extends EventEmitter {
                 if (!subject.user.bot) {
                     if (subject.kickable) {
                         logger.info(
-                            `${subject.displayName} with ID of ${subject.id} has been here for ${daysSinceJoin}days so he was added to kick list`
+                            `${subject.displayName} with ID of ${subject.id} has been here for ${daysSinceJoin}days so he was sent to be kicked`
                         );
                         this.emit("kicked", subject, daysSinceJoin);
                     } else {
