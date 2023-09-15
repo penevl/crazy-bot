@@ -14,21 +14,14 @@ class CheckUserActivity extends EventEmitter {
         if (getUserRoles(subject).includes(newcomerRole)) {
             const daysSinceJoin = calculateJoinTime(subject);
             var usersToKick = [];
-            var imposters = [];
 
             if (daysSinceJoin >= 15 && daysSinceJoin < 30) {
                 if (subject.user.bot) return;
 
-                imposters.push(subject);
                 logger.info(
                     `${subject.displayName} has been here for ${daysSinceJoin}days so he been added to imposter list`
                 );
-                this.emit(
-                    "imposter",
-                    subject.displayName,
-                    daysSinceJoin,
-                    imposters
-                );
+                this.emit("imposter", subject, daysSinceJoin);
             }
 
             if (daysSinceJoin >= 30) {
