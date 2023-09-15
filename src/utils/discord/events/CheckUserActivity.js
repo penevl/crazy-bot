@@ -13,7 +13,6 @@ class CheckUserActivity extends EventEmitter {
         logger.debug(`Checking ${subject.displayName}`);
         if (getUserRoles(subject).includes(newcomerRole)) {
             const daysSinceJoin = calculateJoinTime(subject);
-            var usersToKick = [];
 
             if (daysSinceJoin >= 15 && daysSinceJoin < 30) {
                 if (subject.user.bot) return;
@@ -27,17 +26,10 @@ class CheckUserActivity extends EventEmitter {
             if (daysSinceJoin >= 30) {
                 if (!subject.user.bot) {
                     if (subject.kickable) {
-                        usersToKick.push(subject);
                         logger.info(
                             `${subject.displayName} with ID of ${subject.id} has been here for ${daysSinceJoin}days so he was added to kick list`
                         );
-                        this.emit(
-                            "kicked",
-                            subject.displayName,
-                            subject.id,
-                            daysSinceJoin,
-                            usersToKick
-                        );
+                        this.emit("kicked", subject, daysSinceJoin);
                     } else {
                         logger.error(
                             `It appears that for some reason ${subject.displayName} is un-kickable by the bot`
