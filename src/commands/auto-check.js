@@ -1,7 +1,9 @@
 require("dotenv").config();
 const { logger } = require("../utils/logger");
 const { isAdmin } = require("../utils/discord/user");
-const { CheckUserActivity } = require("../utils/discord/events/CheckUserActivity");
+const {
+    CheckUserActivity,
+} = require("../utils/discord/events/CheckUserActivity");
 
 function main(client) {
     logger.info("Registered auto-check command");
@@ -26,9 +28,10 @@ function main(client) {
 
             logger.info(`${initiator.displayName} has initiated an auto check`);
             const checkUserActivity = new CheckUserActivity();
-            checkUserActivity.on("imposter", (displayName, daysSinceJoin) => {
+            checkUserActivity.on("imposter", (subject, daysSinceJoin) => {
+                subject.roles.add(process.env.IMPOSTER_ROLE);
                 interaction.channel.send({
-                    content: `${displayName} has been here for ${daysSinceJoin} days so he was given the imposter role`,
+                    content: `${subject.displayName} has been here for ${daysSinceJoin} days so he was given the imposter role`,
                 });
             });
 
