@@ -1,1 +1,66 @@
-<p class="font-mono text-gray-400 text-center">Hello there</p>
+<div>
+    <p class="text-gray-400 text-center">Users to be kicked</p>
+
+    <div class="relative overflow-x-auto rounded">
+        <table
+            class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+        >
+            <thead
+                class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+            >
+                <tr>
+                    <th scope="col" class="px-6 py-3">User</th>
+                    <th scope="col" class="px-6 py-3">Join time</th>
+                    <th scope="col" class="px-6 py-3">UUID</th>
+                    <th scope="col" class="px-6 py-3">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    class="bg-white border-b dark:bg-gray-900 dark:border-gray-700"
+                >
+                    <th
+                        scope="row"
+                        class="px-6 py-4 font-medium text-gray-900 whitespace-normal dark:text-white"
+                    >
+                        <div>
+                            <img
+                                class="w-10 h-10 rounded-full"
+                                src=""
+                                alt="Rounded avatar"
+                            />
+                        </div>
+                        <p class="text-gray-400">Username</p>
+                    </th>
+                    <td class="px-6 py-4">34 Days</td>
+                    <td class="px-6 py-4">347337283537469460</td>
+                    <td class="px-6 py-4 w-min">
+                        <div
+                            class="inline-flex rounded-md shadow-sm"
+                            role="group"
+                        >
+                            <button
+                                type="button"
+                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-l-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+                            >
+                                Remove from list
+                            </button>
+                            <button
+                                type="button"
+                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border-t border-b border-gray-900 hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+                            >
+                                Make imposter
+                            </button>
+                            <button
+                                type="button"
+                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-r-md hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700"
+                            >
+                                Kick
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
