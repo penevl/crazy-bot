@@ -5,6 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Index</title>
         <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://unpkg.com/htmx.org@1.9.5"
+            integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO"
+            crossorigin="anonymous"
+        ></script>
     </head>
     <body class="bg-gray-700">
         <header>
@@ -66,12 +71,15 @@
                             class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0"
                         >
                             <li>
-                                <a
-                                    href="#"
-                                    class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white"
+                                <button
+                                    hx-get="/auto-check/page"
+                                    hx-target="#content-div"
+                                    hx-trigger="load"
+                                    class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-1 lg:px-2 py-2 lg:py-2.5 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
                                     aria-current="page"
-                                    >Auto check</a
                                 >
+                                    Auto check
+                                </button>
                             </li>
                         </ul>
                     </div>

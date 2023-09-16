@@ -4,8 +4,9 @@ const passport = require("passport");
 const session = require("express-session");
 const { logger } = require("../logger");
 const rootRouter = require("../../../routes/root");
+const checkRouter = require("../../../routes/check");
 const { initialize } = require("./passport");
-const { getUsers, addUser } = require("./users");
+const { getUsers } = require("./users");
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false })); // Read form data
@@ -32,6 +33,7 @@ function findUserById(id) {
 initialize(passport, findUser, findUserById);
 
 app.use("/", rootRouter);
+app.use("/auto-check", checkRouter);
 
 /**
  *
