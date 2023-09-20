@@ -1,3 +1,7 @@
+// eslint-disable-next-line no-unused-vars
+const { GuildMember } = require("discord.js");
+const { client } = require("./client");
+
 /**
  *
  * @param {GuildMember} subject
@@ -37,4 +41,15 @@ function isAdmin(user) {
     return toReturn;
 }
 
-module.exports = { calculateJoinTime, getUserRoles, isAdmin };
+/**
+ *
+ * @param {Number} guildId
+ * @returns {GuildMember[]}
+ */
+async function getGuildMembers(guildId) {
+    const guild = await client.guilds.fetch(guildId);
+    const guildMembers = await guild.members.fetch();
+    return guildMembers;
+}
+
+module.exports = { calculateJoinTime, getUserRoles, isAdmin, getGuildMembers };
