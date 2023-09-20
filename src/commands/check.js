@@ -9,7 +9,11 @@ function main(client) {
         if (!interaction.isChatInputCommand()) return;
 
         if (interaction.commandName === "check") {
-            await interaction.deferReply({ ephemeral: true });
+            await interaction.reply({content:"Command deprecated", ephemeral: true });
+            // If statement needed to shut up eslint
+            // eslint-disable-next-line no-constant-condition
+            if(true) return;
+
             const initiator = await interaction.guild.members.fetch(
                 interaction.user.id
             );
