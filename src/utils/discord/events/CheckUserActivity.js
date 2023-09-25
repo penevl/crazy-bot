@@ -12,6 +12,8 @@ class CheckUserActivity extends EventEmitter {
         const newcomerRole = process.env.NEWCOMER_ROLE;
         logger.debug(`Checking ${subject.displayName}`);
         if (getUserRoles(subject).includes(newcomerRole)) {
+            if (getUserRoles(subject).includes(process.env.IMPOSTER_ROLE))
+                return;
             const daysSinceJoin = calculateJoinTime(subject);
 
             if (daysSinceJoin >= 15 && daysSinceJoin < 30) {
