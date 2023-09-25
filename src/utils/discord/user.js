@@ -52,4 +52,25 @@ async function getGuildMembers(guildId) {
     return guildMembers;
 }
 
-module.exports = { calculateJoinTime, getUserRoles, isAdmin, getGuildMembers };
+/**
+ *
+ * @param {Number} roleId
+ * @returns {GuildMember[]}
+ */
+async function getUsersWithRole(roleId) {
+    let toReturn = [];
+    const members = await getGuildMembers(process.env.GUILD_ID);
+    members.forEach((member) => {
+        const memberRoles = getUserRoles(member);
+        if (memberRoles.includes(roleId)) toReturn.push(member);
+    });
+    return toReturn;
+}
+
+module.exports = {
+    calculateJoinTime,
+    getUserRoles,
+    isAdmin,
+    getGuildMembers,
+    getUsersWithRole,
+};
