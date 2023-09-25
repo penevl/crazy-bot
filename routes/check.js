@@ -1,6 +1,9 @@
 const express = require("express");
 const { logger } = require("../src/utils/logger");
-const { getUsersWithRole } = require("../src/utils/discord/user");
+const {
+    getUsersWithRole,
+    getGuildMember,
+} = require("../src/utils/discord/user");
 const {
     CheckUserActivity,
 } = require("../src/utils/discord/events/CheckUserActivity");
@@ -59,6 +62,13 @@ router.get("/users-to-sussify", async (req, res) => {
     res.render("imposter-table", {
         users: users,
     });
+});
+
+router.get("/sus/:id", async (req, res) => {
+    const userId = req.params.id;
+    const user = await getGuildMember(userId, process.env.GUILD_ID);
+    user.roles.add(process.env.IMPOSTER_ROLE);
+    res.status(200);
 });
 
 router.get("/page", (req, res) => {

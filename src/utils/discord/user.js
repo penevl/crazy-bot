@@ -54,6 +54,18 @@ async function getGuildMembers(guildId) {
 
 /**
  *
+ * @param {Number} memberId
+ * @param {Number} guildId
+ * @returns {GuildMember}
+ */
+async function getGuildMember(memberId, guildId) {
+    const guild = await client.guilds.fetch(guildId);
+    const guildMember = await guild.members.fetch(memberId);
+    return guildMember;
+}
+
+/**
+ *
  * @param {Number} roleId
  * @returns {GuildMember[]}
  */
@@ -73,4 +85,5 @@ module.exports = {
     isAdmin,
     getGuildMembers,
     getUsersWithRole,
+    getGuildMember,
 };
